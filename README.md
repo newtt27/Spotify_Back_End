@@ -40,7 +40,7 @@ DATABASES = {
 
 ## ✅ 4. Migrate
 
-### 4.1 Tạo migrations từ các Model dưới dạngPythoncode:
+### 4.1 Tạo migrations từ các Model dưới dạng Pythoncode:
 
     python manage.py makemigrations
 
@@ -52,7 +52,11 @@ DATABASES = {
 
     python manage.py createsuperuser
 
-## ✅ 6. Chạy server:
+## ✅ 6. Chạy seeddata.py để cho local có data:
+
+    py seeddata.py
+
+## ✅ 7. Chạy server:
 
     python manage.py runserver
 
