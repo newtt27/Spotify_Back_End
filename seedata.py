@@ -8,14 +8,14 @@ from music.models import Track, Album, Artist, ArtistGenre, Genre
 from user.models import User, UserFavouriteTrack, UserCreatedAlbum, UserCreatedAlbumTrack
 
 # Xóa tất cả các đối tượng trong bảng trước khi thêm mới
-Genre.objects.all().delete()
-Track.objects.all().delete()
-User.objects.filter(is_superuser=False).delete()
-Album.objects.all().delete()
-UserCreatedAlbum.objects.all().delete()
-UserCreatedAlbumTrack.objects.all().delete()
-Artist.objects.all().delete()
-ArtistGenre.objects.all().delete()
+# Genre.objects.all().delete()
+# Track.objects.all().delete()
+# User.objects.filter(is_superuser=False).delete()
+# Album.objects.all().delete()
+# UserCreatedAlbum.objects.all().delete()
+# UserCreatedAlbumTrack.objects.all().delete()
+# Artist.objects.all().delete()
+# ArtistGenre.objects.all().delete()
 
 #Tạo gerne
 pop = Genre.objects.create(name='Pop')
