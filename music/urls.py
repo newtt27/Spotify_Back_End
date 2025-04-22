@@ -1,6 +1,6 @@
 from django.urls import path
-from music.views import GetTrackList
+from music.views import GetTopCharts
 
 urlpatterns = [
-    path('tracks/', GetTrackList.as_view(), name='get_track_list'),
+    path('topcharts/', GetTopCharts.as_view(), name='get_top_charts'),
 ]
