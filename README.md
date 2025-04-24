@@ -1,6 +1,23 @@
 # SpotifyClone-Backend 🎵
 
-Backend của dự án Spotify Clone – xây dựng bằng Django và PostgreSQL.
+The backend of the **Spotify Clone** project, built with **Django** and **PostgreSQL**.
+
+This project provides APIs for music streaming, including features like searching songs, getting top charts, filtering by genre, and retrieving songs by artist. The backend is designed to handle user requests and deliver relevant music data to the frontend.
+
+## Features:
+
+- User authentication and management
+- Music search by name, genre, or artist
+- Top charts retrieval
+- Integration with PostgreSQL database for efficient data storage
+
+The backend follows RESTful API principles and is built with Django's robust features for scalability and flexibility.
+
+**Technologies**:
+
+- Backend Framework: Django
+- Database: PostgreSQL
+- API Protocol: REST
 
 ## API Endpoints 📌
 
