@@ -2,28 +2,32 @@
 
 Backend của dự án Spotify Clone – xây dựng bằng Django và PostgreSQL.
 
-## ✅ 1. Tạo môi trường ảo
+# API Endpoints
+
+# Setup and Installation
+
+## 1. Create a Virtual Environment
 
 ```bash
 python -m venv myvenv
 ```
 
-### 1.1 Mở quyền chạy Scripts trên PowerShell (Windows)
+### 1.1 Allow Script Execution in PowerShell (Windows)
 
     Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
-### 1.2 Kích hoạt môi trường ảo
+### 1.2 Activate the Virtual Environment
 
     myvenv\Scripts\activate
 
-## ✅ 2.Cài đặt các thư viện cần thiết
+## 2. Install Required Libraries
 
     pip install -r requirements.txt
 
-## ✅ 3.Cấu hình lại database:
+## 3. Configure the Database
 
-- Cấu hình lại database trong file settings.py của spotify_clone_backend
-- Database dùng PostgreSQL
+- Update the database settings in the settings.py file inside the spotify_clone_backend directory
+- The project uses PostgreSQL as the database
 
 ```python
 DATABASES = {
@@ -38,38 +42,42 @@ DATABASES = {
 }
 ```
 
-## ✅ 4. Migrate
+## 4. Run Migrations
 
-### 4.1 Tạo migrations từ các Model dưới dạng Pythoncode:
+### 4.1 Generate Migration Files from Models:
 
     python manage.py makemigrations
 
-### 4.2 Thực hiện các migration đó trên database thật:
+### 4.2 Apply Migrations to the Actual Database:
 
     python manage.py migrate
 
-## ✅ 5. Tạo tài khoản quản trị (superuser)
+## 5. Create an Admin (Superuser) Account
 
     python manage.py createsuperuser
 
-## ✅ 6. Chạy seeddata.py để cho local có data:
+## 6. Run Seed Local Data:
 
     py seeddata.py
 
-## ✅ 7. Chạy server:
+## 7. Run the Server:
 
     python manage.py runserver
 
-## Một số lệnh Django hữu ích:
+## Some Useful Django Commands:
 
-- Tạo project Django:
+- Create a Django Project:
 
 ```bash
 django-admin startproject 'project-name' .
 ```
 
-- Tạo một app:
+- Create a Django App:
 
 ```bash
 python manage.py startapp 'app-name'
 ```
+
+# LICENSE
+
+- This project is licensed under the MIT License. See the LICENSE file for details.
