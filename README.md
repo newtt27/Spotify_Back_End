@@ -2,27 +2,37 @@
 
 Backend của dự án Spotify Clone – xây dựng bằng Django và PostgreSQL.
 
-# API Endpoints
+# API Endpoints 📌
 
-# Setup and Installation
+# Setup and Installation ⚙️
 
 ## 1. Create a Virtual Environment
 
+- Run the following command:
+
 ```bash
-python -m venv myvenv
+  python -m venv myvenv
 ```
 
-### 1.1 Allow Script Execution in PowerShell (Windows)
+- Allow Script Execution in PowerShell (Windows)
 
+```bash
     Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
 
-### 1.2 Activate the Virtual Environment
+- Activate the Virtual Environment
 
+```bash
     myvenv\Scripts\activate
+```
 
 ## 2. Install Required Libraries
 
-    pip install -r requirements.txt
+- Run:
+
+```bash
+  pip install -r requirements.txt
+```
 
 ## 3. Configure the Database
 
@@ -44,25 +54,41 @@ DATABASES = {
 
 ## 4. Run Migrations
 
-### 4.1 Generate Migration Files from Models:
+- Generate Migration Files from Models:
 
+```bash
     python manage.py makemigrations
+```
 
-### 4.2 Apply Migrations to the Actual Database:
+- Apply Migrations to the Actual Database:
 
+```bash
     python manage.py migrate
+```
 
 ## 5. Create an Admin (Superuser) Account
 
+- Run:
+
+```bash
     python manage.py createsuperuser
+```
 
 ## 6. Run Seed Local Data:
 
-    py seeddata.py
+- Run the following script to populate test data:
+
+```bash
+  py seeddata.py
+```
 
 ## 7. Run the Server:
 
+- Run:
+
+```bash
     python manage.py runserver
+```
 
 ## Some Useful Django Commands:
 
@@ -78,6 +104,6 @@ django-admin startproject 'project-name' .
 python manage.py startapp 'app-name'
 ```
 
-# LICENSE
+# 📄LICENSE
 
 - This project is licensed under the MIT License. See the LICENSE file for details.
