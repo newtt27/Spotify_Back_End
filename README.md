@@ -2,7 +2,7 @@
 
 Backend của dự án Spotify Clone – xây dựng bằng Django và PostgreSQL.
 
-## 📌 API Endpoints
+## API Endpoints 📌
 
 **Base URL (local)**: `http://127.0.0.1:8000/api/`
 
