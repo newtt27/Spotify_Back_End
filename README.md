@@ -4,12 +4,14 @@ Backend của dự án Spotify Clone – xây dựng bằng Django và PostgreSQ
 
 ## 📌 API Endpoints
 
-| Endpoint                                  | Method | Name                  | Description                                                             |
-| ----------------------------------------- | ------ | --------------------- | ----------------------------------------------------------------------- |
-| `/music/topcharts/`                       | GET    | `get_top_charts`      | Retrieves a list of songs in the top charts.                            |
-| `/music/tracks/genre/<str:genre_name>/`   | GET    | `get_songs_by_genre`  | Retrieves a list of songs belonging to a specific genre (`genre_name`). |
-| `/music/tracks/search/?q=`                | GET    | `get_songs_by_search` | Searches for songs based on a keyword passed as query parameter `q`.    |
-| `/music/tracks/artist/<str:artist_name>/` | GET    | `get_songs_by_artist` | Retrieves details about an artist and their songs (`artist_name`).      |
+**Base URL (local)**: `http://127.0.0.1:8000/api/`
+
+| Endpoint                                  | Method | Params                        | Description                                                                  |
+| ----------------------------------------- | ------ | ----------------------------- | ---------------------------------------------------------------------------- |
+| `/music/topcharts/`                       | GET    | –                             | Get top chart songs. Returns a list of tracks in top charts.                 |
+| `/music/tracks/genre/<str:genre_name>/`   | GET    | `genre_name` in URL path      | Get songs by genre. Example: `/genre/pop/`. Returns matching tracks.         |
+| `/music/tracks/search/`                   | GET    | `search_name` in query string | Search songs by name. Example: `?search_name=love`. Returns matching tracks. |
+| `/music/tracks/artist/<str:artist_name>/` | GET    | `artist_name` in URL path     | Get songs by artist. Example: `/artist/eminem/`. Returns artist & tracks.    |
 
 # Setup and Installation ⚙️
 
