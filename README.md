@@ -34,6 +34,9 @@ The backend follows RESTful API principles and is built with Django's robust fea
 | `/user/login`                             | POST   | -                             | Validate information and login. Create a session.                            |
 | `/user/logout`                            | POST   | -                             | Validate information and logout. Delete current session.                     |
 | `/user/me`                                | GET    | -                             | Personal information page. Return the user.                                  |
+| `/user/<int:user_id>/favourites/`         | POST   | JSON with `track_id`          | Add a track to the user's favourites list.                                   |
+| `/user/<int:user_id>/favourites/<int:track_id>/`     | DELETE | –                             | Remove a track from the user's favourites list.                |
+| `/user/<int:user_id>/favourites/list/`    | GET    | –                             | Get all favourite tracks of a user. Returns full track info including artist album.|
 
 # Setup and Installation ⚙️
 
