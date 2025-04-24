@@ -19,7 +19,7 @@ class GetTopCharts(APIView):
         #Truy vấn nhạc
         # Sắp xếp theo số lượt nghe giảm dần và lấy 10 bản nhạc đầu tiên
         tracks = Track.objects.all().order_by('-views')[:10] #Thêm dấu '-' trước views để sắp xếp theo thứ tự giảm dần
-        serializer = TrackSerializer(tracks, many=True)
+        serializer = TrackSerializer(tracks, many=True, context={'request': request})
 
         top_charts = {
             "tracks": {
@@ -45,7 +45,7 @@ class GetSongByGerneName(APIView):
         if not tracks:
                 return Response({"message": "No songs found for this genre."}, status=status.HTTP_404_NOT_FOUND)
         
-        serializer = TrackSerializer(tracks, many=True)
+        serializer = TrackSerializer(tracks, many=True, context={'request': request})
 
         response_data = {
             "songsByGenre": serializer.data,
@@ -67,7 +67,7 @@ class GetSongBySearchName(APIView):
         if not tracks.exists():
             return Response({"message": "No songs found for this name."}, status=status.HTTP_404_NOT_FOUND)
         
-        serializer = TrackSerializer(tracks, many=True)
+        serializer = TrackSerializer(tracks, many=True, context={'request': request})
 
         response_data = {
             "songsBySearch": {
