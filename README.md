@@ -4,6 +4,12 @@ Backend của dự án Spotify Clone – xây dựng bằng Django và PostgreSQ
 
 # API Endpoints 📌
 
+Endpoint | Method | Name | Description
+/music/topcharts/ | GET | get_top_charts | Retrieves a list of songs in the top charts.
+/music/tracks/genre/<str:genre_name>/ | GET | get_songs_by_genre | Retrieves a list of songs belonging to a specific genre (genre_name).
+/music/tracks/search/?q= | GET | get_songs_by_search | Searches for songs based on a keyword passed as a query parameter q.
+/music/tracks/artist/<str:artist_name>/ | GET | get_songs_by_artist | Retrieves details about an artist and their songs (artist_name).
+
 # Setup and Installation ⚙️
 
 ## 1. Create a Virtual Environment
