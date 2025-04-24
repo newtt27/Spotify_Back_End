@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login, logout
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from user.models import User
 from .serializers.User_Serializer import UserSerializer
@@ -20,3 +22,37 @@ class RegisterView(APIView):
             serializer.save()
             return Response({"message": "User registered successfully!"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)  # Gắn session vào user
+            return Response({"message": "Đăng nhập thành công"}, status=status.HTTP_200_OK)
+        return Response({"error": "Sai tài khoản hoặc mật khẩu"}, status=status.HTTP_400_BAD_REQUEST)
+    
+class ProtectedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({"user": request.user.username})
+    
+class LogoutView(APIView):
+    def post(self, request):
+        logout(request)  # Hủy session
+        return Response({"message": "Đăng xuất thành công"}, status=status.HTTP_200_OK)
+    
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        user_info = {
+            "username": user.username,
+            "email": user.email,
+            "name": user.name,
+        }
+        return Response(user_info, status=status.HTTP_200_OK)
