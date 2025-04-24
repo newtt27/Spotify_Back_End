@@ -30,6 +30,7 @@ The backend follows RESTful API principles and is built with Django's robust fea
 | `/music/tracks/search/`                   | GET    | `search_name` in query string | Search songs by name. Example: `?search_name=love`. Returns matching tracks. |
 | `/music/tracks/artist/<str:artist_name>/` | GET    | `artist_name` in URL path     | Get songs by artist. Example: `/artist/eminem/`. Returns artist & tracks.    |
 | `/user/`                                  | GET    | -                             | Get the list of users with detailed information. Return the user list.       |
+| `/user/register`                          | GET    | -                             | Validate information and create user. Return the user.                       |
 
 # Setup and Installation ⚙️
 
