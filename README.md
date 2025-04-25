@@ -37,6 +37,10 @@ The backend follows RESTful API principles and is built with Django's robust fea
 | `/user/<int:user_id>/favourites/`         | POST   | JSON with `track_id`          | Add a track to the user's favourites list.                                   |
 | `/user/<int:user_id>/favourites/<int:track_id>/`     | DELETE | –                             | Remove a track from the user's favourites list.                |
 | `/user/<int:user_id>/favourites/list/`    | GET    | –                             | Get all favourite tracks of a user. Returns full track info including artist album.|
+| `/users/<int:id>/albums/` | GET | – | Get all custom albums created by the user. Returns album name, ID, artist, image, and tracks. |
+| `/users/<int:id>/albums/create/` | POST | JSON: name | Create a new custom album. The album_id is auto-generated (e.g., album5).  |
+| `/users/albums/<str:album_id>/rename/` | PUT | JSON: name | Rename a custom album.    |
+| `/users/albums/<str:album_id>/delete/` | DELETE | – | Delete a custom album created by the user.  |
 
 # Setup and Installation ⚙️
 

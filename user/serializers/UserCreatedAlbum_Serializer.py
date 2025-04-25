@@ -12,7 +12,26 @@ class UserCreatedAlbumSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserCreatedAlbum
         fields = ['album_id', 'name', 'artist', 'image', 'tracks']
+        read_only_fields = ['album_id']  # Đảm bảo rằng album_id không yêu cầu từ client
 
+
+    def create(self, validated_data):
+        """Override the create method to ensure the album_id is generated."""
+        album_id = self.context['request'].data.get('album_id', None)  # Get album_id from data
+        if not album_id:
+            album_id = self.generate_unique_album_id()  # If album_id is not provided, generate it
+        validated_data['album_id'] = album_id  # Set the generated album_id
+        return super().create(validated_data)
+
+    def generate_unique_album_id(self):
+        """Generate album_id in format 'album' + unique ID."""
+        last_album = UserCreatedAlbum.objects.all().order_by('-album_id').first()
+        if last_album:
+            # Lấy số ID cuối cùng của album_id
+            last_number = int(last_album.album_id.replace('album', ''))
+            return f"album{last_number + 1}"
+        return "album1"  # Nếu không có album nào, bắt đầu từ "album1"
+    
     def extract_album_pk(self, album_id):
         """Hàm này lấy phần số cuối của album_id, ví dụ 'album23' -> 23"""
         match = re.search(r'\d+', album_id)
