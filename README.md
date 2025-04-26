@@ -33,17 +33,17 @@ The backend follows RESTful API principles and is built with Django's robust fea
 | `/music/tracks/related-song/<int:track_id>/`     | GET    | `track_id` in URL path        | Get a list of songs related to a specific track. Example: `/related-song/8/`.                                              |
 | `/music/tracks/albums/`                          | GET    | –                             | Get a list of all albums including artist info, image, and tracks.                                                         |
 | `/user/`                                         | GET    | -                             | Get the list of users with detailed information. Return the user list.                                                     |
-| `/user/register`                                 | POST   | -                             | Validate information and create user.                                                                                      |
+| `/user/register`                                 | POST   | JSON: `username`, `email`, `name`, `password`, `password2`  | Validate information and create user.                                                                                      |
 | `/user/login`                                    | POST   | JSON: `username`, `password`                             | Validate information and login. Create a session.                                               |
 | `/user/logout`                                   | POST   | -                             | Validate information and logout. Delete current session.                                                                   |
 | `/user/me`                                       | GET    | -                             | Personal information page. Return the user.                                                                                |
-| `/user/<int:user_id>/favourites/`                | POST   | JSON with `id` of the user    | Add a track to the user's favourites list. Example: `/user/3/favourites/`.                                                 |
-| `/user/<int:user_id>/favourites/<int:track_id>/` | DELETE | Path params: user_id, track_id  | Remove a track from the user's favourites list. Example: `/user/3/favourites/1/` .                                         |
-| `/user/<int:user_id>/favourites/list/`           | GET    | user_id in URL path           | Get all favourite tracks of a user. Returns full track info including artist album. Example: `/user/3/favourites/list/`.   |
-| `/users/<int:id>/albums/`                        | GET    | JSON: `id` of the user        | Get all custom albums created by the user. Returns album name, ID, artist, image, and tracks. Example: `/users/3/albums/`. |
-| `/users/<int:id>/albums/create/`                 | POST   | JSON: `id` of the user        | Create a new custom album. The album_id is auto-generated (e.g., album5). Example: `/users/3/albums/create/`.              |
-| `/users/albums/<str:album_id>/rename/`           | PUT    | JSON: `id` of the album       | Rename a custom album. Example: `/users/albums/3/rename/`.                                                                 |
-| `/users/albums/<str:album_id>/delete/`           | DELETE | JSON: `id` of the album       | Delete a custom album created by the user. Example: `/users/albums/3/delete/`.                                             |
+| `/user/<int:user_id>/favourites/`                | POST   | Path params: `user_id`, JSON: `track_id`   | Add a track to the user's favourites list. Example: `/user/3/favourites/`.                                                 |
+| `/user/<int:user_id>/favourites/<int:track_id>/` | DELETE | Path params: `user_id`, `track_id`  | Remove a track from the user's favourites list. Example: `/user/3/favourites/1/` .                                         |
+| `/user/<int:user_id>/favourites/list/`           | GET    | Path params: `user_id`        | Get all favourite tracks of a user. Returns full track info including artist album. Example: `/user/3/favourites/list/`.   |
+| `/user/<int:id>/albums/`                        | GET    | Path params: `user_id`,       | Get all custom albums created by the user. Returns album name, ID, artist, image, and tracks. Example: `/user/3/albums/`. |
+| `/user/<int:id>/albums/create/`                 | POST   | Path params: `user_id`, JSON: `name`       | Create a new custom album. The album_id is auto-generated (e.g., album5). Example: `/user/3/albums/create/`.              |
+| `/user/albums/<str:album_id>/rename/`           | PUT    | Path params: `album_id`, JSON: `name`       | Rename a custom album. Example: `/user/albums/album2/rename/`.                                                                 |
+| `/user/albums/<str:album_id>/delete/`           | DELETE | Path params: `album_id`       | Delete a custom album created by the user. Example: `/user/albums/album2/delete/`.                                             |
 
 # Setup and Installation ⚙️
 
