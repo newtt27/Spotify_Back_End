@@ -13,6 +13,13 @@ from music.serializers.artist_serializers import ArtistSerializer, ArtistDetailS
 from music.serializers.genre_serializers import GenreSerializer
 
 # Create your views here.
+class UpdateTrackViews(APIView):
+    def patch(self, request, track_id):
+        track = get_object_or_404(Track, id=track_id)
+        track.views += 1
+        track.save()
+        return Response({"detail": "Track view count updated."}, status=status.HTTP_200_OK)
+    
 class GetTopCharts(APIView):
     def get(self, request):
 
