@@ -103,13 +103,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'  # Thay đổi nếu bạn có model người dùng tùy chỉnh
 # ------------------------------------ #
 # CORS cho phép React frontend gọi API
-CORS_ALLOWED_ALL_ORIGINS = True
+# CORS_ALLOWED_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 # ------------------------------------ #
 # (Tùy chọn) REST Framework setting nếu dùng API
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
 }
 

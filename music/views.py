@@ -8,18 +8,25 @@ from django.db.models import Q
 #Import các model và serializer cần thiết
 from music.models import Track, Genre, Album, Artist, ArtistGenre
 from music.serializers.tracks_serializers import TrackSerializer
-from music.serializers.albums_serializers import AlbumSerializer
+from music.serializers.albums_serializers import AlbumSerializer, AlbumDetailSerializer
 from music.serializers.artist_serializers import ArtistSerializer, ArtistDetailSerializer
 from music.serializers.genre_serializers import GenreSerializer
 
 # Create your views here.
+class UpdateTrackViews(APIView):
+    def patch(self, request, track_id):
+        track = get_object_or_404(Track, id=track_id)
+        track.views += 1
+        track.save()
+        return Response({"detail": "Track view count updated."}, status=status.HTTP_200_OK)
+    
 class GetTopCharts(APIView):
     def get(self, request):
 
         #Truy vấn nhạc
         # Sắp xếp theo số lượt nghe giảm dần và lấy 10 bản nhạc đầu tiên
         tracks = Track.objects.all().order_by('-views')[:10] #Thêm dấu '-' trước views để sắp xếp theo thứ tự giảm dần
-        serializer = TrackSerializer(tracks, many=True)
+        serializer = TrackSerializer(tracks, many=True, context={'request': request})
 
         top_charts = {
             "tracks": {
@@ -45,7 +52,7 @@ class GetSongByGerneName(APIView):
         if not tracks:
                 return Response({"message": "No songs found for this genre."}, status=status.HTTP_404_NOT_FOUND)
         
-        serializer = TrackSerializer(tracks, many=True)
+        serializer = TrackSerializer(tracks, many=True, context={'request': request})
 
         response_data = {
             "songsByGenre": serializer.data,
@@ -67,7 +74,7 @@ class GetSongBySearchName(APIView):
         if not tracks.exists():
             return Response({"message": "No songs found for this name."}, status=status.HTTP_404_NOT_FOUND)
         
-        serializer = TrackSerializer(tracks, many=True)
+        serializer = TrackSerializer(tracks, many=True, context={'request': request})
 
         response_data = {
             "songsBySearch": {
@@ -78,9 +85,62 @@ class GetSongBySearchName(APIView):
 
 class GetArtistDetails(APIView):
     def get(self, request, artist_name):
-        artist = get_object_or_404(Artist, name=artist_name)
+        artist = get_object_or_404(Artist, name__iexact=artist_name)
+        #name__iexact: artist_name) #Tìm kiếm artist theo tên chính xác k phân biệt chữ hoa chữ thường
         serializer = ArtistDetailSerializer(artist)
         respones_data = {
             "artistDetails": serializer.data
         }
         return Response(respones_data, status=status.HTTP_200_OK)
+
+class GetSongDetails(APIView):
+    def get(self, request, track_id):
+        track = get_object_or_404(Track, id=track_id)
+        serializer = TrackSerializer(track, context={'request': request})
+        response_data = {
+            "songDetails": serializer.data
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
+class GetSongRelated(APIView):
+    def get(self, request, track_id):
+        #Tìm thông tin bài hát theo track_id 
+        try:
+            track = Track.objects.select_related('artist').get(id=track_id)
+        except Track.DoesNotExist:
+            return Response({"error": "Track not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+        artist = track.artist
+        #Tìm các bài hát khác của cùng một nghệ sĩ
+        same_artist_tracks = Track.objects.filter(artist=artist).exclude(id=track_id)[:5]
+
+        #Tìm thể loại của ca sĩ
+        artist_genres = ArtistGenre.objects.filter(artist=artist).values_list('genre', flat=True)
+        #artist_genres = [1, 2] #Pop, R&B
+
+        #Tìm các nghệ sĩ cùng thể loại
+        related_artists = ArtistGenre.objects.filter(genre__in=artist_genres).exclude(artist=artist).values_list('artist', flat=True)
+
+        #Tìm các bài hát của các nghệ sĩ liên quan
+        related_tracks_by_genre = Track.objects.filter(artist__in=related_artists).exclude(id=track_id)[:5]
+        #Gộp lại
+        related_tracks = same_artist_tracks.union(related_tracks_by_genre)
+
+        serializers = TrackSerializer(related_tracks, many=True)
+        response_data = {
+            "songRelated": {
+                "tracks": serializers.data,
+            }
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
+class GetAlbumList(APIView):
+    def get(self, request):
+        albums = Album.objects.all()
+        serializers = AlbumDetailSerializer(albums, many=True)
+        respone_data = {
+            "albums": serializers.data
+        }
+        return Response(respone_data, status=status.HTTP_200_OK)
+
+        
