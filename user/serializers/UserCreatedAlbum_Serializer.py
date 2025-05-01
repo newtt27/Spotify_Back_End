@@ -72,3 +72,12 @@ class UserCreatedAlbumSerializer(serializers.ModelSerializer):
         if request is not None and relative_path:
             return request.build_absolute_uri(relative_path)
         return relative_path
+
+class AddTracksToAlbumSerializer(serializers.Serializer):
+    # Không cần truyền album_id trong serializer vì nó đã được lấy từ URL (kwargs['album_id']) trong view.
+    track_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        allow_empty=False,
+        write_only=True,
+        help_text="Danh sách ID của các track sẽ được thêm vào album."
+    )

@@ -6,12 +6,13 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 import re
 
+from music.models import Track
 from user.models import User
-from .models import UserFavouriteTrack, UserCreatedAlbum
+from .models import UserFavouriteTrack, UserCreatedAlbum, UserCreatedAlbumTrack  
 from .serializers.User_Serializer import UserSerializer
 from .serializers.User_Register import UserRegisterSerializer
 from .serializers.User_FavouriteTracks import UserFavouriteTrackSerializer
-from .serializers.UserCreatedAlbum_Serializer import UserCreatedAlbumSerializer
+from .serializers.UserCreatedAlbum_Serializer import UserCreatedAlbumSerializer, AddTracksToAlbumSerializer
 
 # GET
 class UserListAPIView(APIView):
@@ -104,7 +105,7 @@ class UserFavouriteTrackDeleteView(APIView):
             return Response({"detail": "Track not found in favourites."}, status=status.HTTP_404_NOT_FOUND)
         
 #       user_created_album_views
-# GET /users/{id}/albums/
+# GET /user/{id}/albums/
 class UserAlbumListView(generics.ListAPIView):
     serializer_class = UserCreatedAlbumSerializer
     permission_classes = [IsAuthenticated]
@@ -112,7 +113,7 @@ class UserAlbumListView(generics.ListAPIView):
     def get_queryset(self):
         return UserCreatedAlbum.objects.filter(user__id=self.kwargs['id'])
 
-# POST /users/{id}/albums/
+# POST /user/{id}/albums/
 class UserAlbumCreateView(generics.CreateAPIView):
     serializer_class = UserCreatedAlbumSerializer
     permission_classes = [IsAuthenticated]
@@ -148,3 +149,50 @@ class UserAlbumDeleteView(generics.DestroyAPIView):
     queryset = UserCreatedAlbum.objects.all()
     permission_classes = [IsAuthenticated]
     lookup_field = 'album_id'
+
+# POST /user/{id}/albums/{album_id}/add-tracks/
+class AddTracksToUserAlbumView(generics.GenericAPIView):
+    serializer_class = AddTracksToAlbumSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = get_object_or_404(User, id=kwargs['id'])
+        album = get_object_or_404(UserCreatedAlbum, album_id=kwargs['album_id'], user=user) 
+
+        # Kiểm tra quyền sở hữu
+        if request.user != user:
+            return Response(
+                {"detail": "Bạn không có quyền thêm track vào album của người khác."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        track_ids = serializer.validated_data['track_ids']
+
+        added_tracks = []
+        existing_tracks = []
+        invalid_tracks = []
+
+        for track_id in track_ids:
+            try:
+                track = Track.objects.get(id=track_id)
+                relation, created = UserCreatedAlbumTrack.objects.get_or_create(album=album, track=track)
+                if created:
+                    added_tracks.append(track_id)
+                else:
+                    existing_tracks.append(track_id)
+            except Track.DoesNotExist:
+                invalid_tracks.append(track_id)
+
+        response_data = {
+            "message": f"Đã thêm {len(added_tracks)} track vào album '{album.name}'.",
+            "added_track_ids": added_tracks
+        }
+
+        if existing_tracks:
+            response_data["existing_tracks"] = existing_tracks
+        if invalid_tracks:
+            response_data["invalid_tracks"] = invalid_tracks
+
+        return Response(response_data, status=status.HTTP_200_OK)

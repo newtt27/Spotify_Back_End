@@ -16,4 +16,5 @@ urlpatterns = [
     path('<int:id>/albums/create/', views.UserAlbumCreateView.as_view(), name='user-album-create'),
     path('albums/<str:album_id>/rename/', views.UserAlbumRenameView.as_view(), name='rename-user-album'),
     path('albums/<str:album_id>/delete/', views.UserAlbumDeleteView.as_view(), name='delete-user-album'),
+    path('<int:id>/albums/<str:album_id>/add-tracks/', views.AddTracksToUserAlbumView.as_view(), name='add-tracks-to-user-album'),
 ]

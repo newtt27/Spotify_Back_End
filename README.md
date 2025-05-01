@@ -41,11 +41,11 @@ The backend follows RESTful API principles and is built with Django's robust fea
 | `/user/<int:user_id>/favourites/`                | POST   | Path params: `user_id`, JSON: `track_id`                   | Add a track to the user's favourites list. Example: `/user/3/favourites/`.                                                |
 | `/user/<int:user_id>/favourites/<int:track_id>/` | DELETE | Path params: `user_id`, `track_id`                         | Remove a track from the user's favourites list. Example: `/user/3/favourites/1/` .                                        |
 | `/user/<int:user_id>/favourites/list/`           | GET    | Path params: `user_id`                                     | Get all favourite tracks of a user. Returns full track info including artist album. Example: `/user/3/favourites/list/`.  |
-| `/user/<int:id>/albums/`                         | GET    | Path params: `user_id`,                                    | Get all custom albums created by the user. Returns album name, ID, artist, image, and tracks. Example: `/user/3/albums/`. |
+| `/user/<int:id>/albums/`                         | GET    | Path params: `user_id`                                     | Get all custom albums created by the user. Returns album name, ID, artist, image, and tracks. Example: `/user/3/albums/`. |
 | `/user/<int:id>/albums/create/`                  | POST   | Path params: `user_id`, JSON: `name`                       | Create a new custom album. The album_id is auto-generated (e.g., album5). Example: `/user/3/albums/create/`.              |
 | `/user/albums/<str:album_id>/rename/`            | PUT    | Path params: `album_id`, JSON: `name`                      | Rename a custom album. Example: `/user/albums/album2/rename/`.                                                            |
 | `/user/albums/<str:album_id>/delete/`            | DELETE | Path params: `album_id`                                    | Delete a custom album created by the user. Example: `/user/albums/album2/delete/`.                                        |
-
+| `/user/{user_id}/albums/{album_id}/add-tracks/`  | POST   | Path params: `user_id`, `album_id`. JSON: `track_ids`      | Add tracks to a custom album. Example: `/user/3/albums/album1/add-tracks/`, `{"track_ids": [1, 2, 3]}`. |
 # Setup and Installation ⚙️
 
 ## 1. Create a Virtual Environment
