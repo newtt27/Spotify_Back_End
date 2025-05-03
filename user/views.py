@@ -15,11 +15,16 @@ from .serializers.User_Serializer import UserSerializer
 from .serializers.User_Register import UserRegisterSerializer
 from .serializers.User_FavouriteTracks import UserFavouriteTrackSerializer
 from .serializers.UserCreatedAlbum_Serializer import UserCreatedAlbumSerializer, AddTracksToAlbumSerializer
+from django.middleware.csrf import get_token
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class GetCSRFToken(APIView):
     def get(self, request):
-        return Response({"message": "CSRF token set."})
+        csrf_token = get_token(request)
+        return Response({
+            'message': 'CSRF token set.',
+            'csrftoken': csrf_token
+        })
     
 # GET
 class UserListAPIView(APIView):
