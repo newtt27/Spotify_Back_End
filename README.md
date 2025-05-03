@@ -46,6 +46,7 @@ The backend follows RESTful API principles and is built with Django's robust fea
 | `/user/albums/<str:album_id>/rename/`            | PUT    | Path params: `album_id`, JSON: `name`                      | Rename a custom album. Example: `/user/albums/album2/rename/`.                                                            |
 | `/user/albums/<str:album_id>/delete/`            | DELETE | Path params: `album_id`                                    | Delete a custom album created by the user. Example: `/user/albums/album2/delete/`.                                        |
 | `/user/{user_id}/albums/{album_id}/add-tracks/`  | POST   | Path params: `user_id`, `album_id`. JSON: `track_ids`      | Add tracks to a custom album. Example: `/user/3/albums/album1/add-tracks/`, `{"track_ids": [1, 2, 3]}`. |
+| `/user/csrf/`                                    | GET    | -                                                          | Return a CSRF token using for other requests. |
 # Setup and Installation ⚙️
 
 ## 1. Create a Virtual Environment

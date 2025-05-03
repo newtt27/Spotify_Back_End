@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils.decorators import method_decorator
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,6 +16,11 @@ from .serializers.User_Register import UserRegisterSerializer
 from .serializers.User_FavouriteTracks import UserFavouriteTrackSerializer
 from .serializers.UserCreatedAlbum_Serializer import UserCreatedAlbumSerializer, AddTracksToAlbumSerializer
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class GetCSRFToken(APIView):
+    def get(self, request):
+        return Response({"message": "CSRF token set."})
+    
 # GET
 class UserListAPIView(APIView):
     def get(self, request, *args, **kwargs):
