@@ -68,7 +68,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'spotify_clone',
         'USER': 'postgres',
-        'PASSWORD': '123',
+        'PASSWORD': '123456',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -107,6 +107,8 @@ AUTH_USER_MODEL = 'user.User'  # Thay đổi nếu bạn có model người dùn
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 # ------------------------------------ #
 # (Tùy chọn) REST Framework setting nếu dùng API
