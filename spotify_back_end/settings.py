@@ -108,6 +108,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
 # ------------------------------------ #
 # (Tùy chọn) REST Framework setting nếu dùng API
 REST_FRAMEWORK = {
