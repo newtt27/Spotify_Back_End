@@ -13,6 +13,7 @@ from .serializers.User_Serializer import UserSerializer
 from .serializers.User_Register import UserRegisterSerializer
 from .serializers.User_FavouriteTracks import UserFavouriteTrackSerializer
 from .serializers.UserCreatedAlbum_Serializer import UserCreatedAlbumSerializer, AddTracksToAlbumSerializer
+from django.middleware.csrf import get_token
 
 # API login + cấp token trong một bước duy nhất
 from rest_framework_simplejwt.tokens import RefreshToken

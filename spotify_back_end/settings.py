@@ -19,20 +19,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-
     # Third-party apps
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
 
-    #Your apps
+    # Your apps
     'user',  # App người dùng
     'music',  # App nhạc
     'api',  # App API
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # nên để ở trên
+    'corsheaders.middleware.CorsMiddleware',  # Nên để ở trên
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -99,16 +98,38 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#Custom User Model
+# Custom User Model
 AUTH_USER_MODEL = 'user.User'  # Thay đổi nếu bạn có model người dùng tùy chỉnh
 # ------------------------------------ #
 # CORS cho phép React frontend gọi API
-# CORS_ALLOWED_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Thêm header X-CSRFToken vào danh sách được phép
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',  # Chữ thường
+    'X-CSRFToken',  # Chữ hoa để khớp với frontend
+]
+
+# Cho phép tất cả phương thức HTTP
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 # ------------------------------------ #
 # (Tùy chọn) REST Framework setting nếu dùng API
@@ -126,3 +147,30 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
+
+CSRF_COOKIE_HTTPONLY = False  # Cho phép JavaScript đọc csrftoken (nếu dùng cookie)
+CSRF_COOKIE_SAMESITE = 'Lax'  # Phù hợp với CORS
+CSRF_COOKIE_SECURE = False  # Set True nếu dùng HTTPS
+CSRF_COOKIE_PATH = '/'  # Áp dụng cho toàn domain
+CSRF_COOKIE_DOMAIN = None  # Không giới hạn domain cụ thể
+
+# Logging để debug CORS
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#         'corsheaders': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#     },
+# }
