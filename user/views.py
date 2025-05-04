@@ -1,11 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.utils.decorators import method_decorator
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 import re
 
 from music.models import Track
@@ -16,10 +14,8 @@ from .serializers.User_Register import UserRegisterSerializer
 from .serializers.User_FavouriteTracks import UserFavouriteTrackSerializer
 from .serializers.UserCreatedAlbum_Serializer import UserCreatedAlbumSerializer, AddTracksToAlbumSerializer
 
-@method_decorator(ensure_csrf_cookie, name='dispatch')
-class GetCSRFToken(APIView):
-    def get(self, request):
-        return Response({"message": "CSRF token set."})
+# API login + cấp token trong một bước duy nhất
+from rest_framework_simplejwt.tokens import RefreshToken
     
 # GET
 class UserListAPIView(APIView):
@@ -37,29 +33,42 @@ class RegisterView(APIView):
             return Response({"message": "User registered successfully!"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# POST
+# POST Login với JWT
 class LoginView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
 
+        # Xác thực người dùng
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
-            login(request, user)  # Gắn session vào user
-            return Response({"message": "Đăng nhập thành công"}, status=status.HTTP_200_OK)
+            # Tạo refresh token và access token
+            refresh = RefreshToken.for_user(user)
+            
+            # Lưu access_token vào session
+            request.session['access_token'] = str(refresh.access_token)
+
+            return Response({
+                'access_token': str(refresh.access_token),
+                'refresh_token': str(refresh),
+                'message': 'Đăng nhập thành công'
+            }, status=status.HTTP_200_OK)
+
         return Response({"error": "Sai tài khoản hoặc mật khẩu"}, status=status.HTTP_400_BAD_REQUEST)
 
 # GET   
 class ProtectedView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Lúc này, JWT sẽ tự động kiểm tra
 
     def get(self, request):
         return Response({"user": request.user.username})
 
-# POST    
+# POST Logout - chỉ cần gửi phản hồi mà không cần logout
 class LogoutView(APIView):
     def post(self, request):
-        logout(request)  # Hủy session
         return Response({"message": "Đăng xuất thành công"}, status=status.HTTP_200_OK)
     
 # GET
@@ -73,11 +82,16 @@ class MeView(APIView):
             "email": user.email,
             "name": user.name,
         }
-        return Response(user_info, status=status.HTTP_200_OK)
-    
 
+        # Gọi trực tiếp hàm xử lý nếu muốn tái sử dụng logic, không dùng HTTP
+        # user_info['additional_data'] = some_internal_function(user)
+
+        return Response(user_info, status=status.HTTP_200_OK)
+        
 # GET user favourites
 class UserFavouritesView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, user_id):
         favourites = UserFavouriteTrack.objects.filter(user__id=user_id).select_related('track__artist', 'track__album')
         serializer = UserFavouriteTrackSerializer(favourites, many=True, context={'request': request})
@@ -85,6 +99,8 @@ class UserFavouritesView(APIView):
 
 # POST add to user favourites
 class UserFavouriteTrackCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, user_id):
         track_id = request.data.get('track_id')
         if not track_id:
@@ -103,6 +119,8 @@ class UserFavouriteTrackCreateView(APIView):
 
 # DELETE remove from user favourites
 class UserFavouriteTrackDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def delete(self, request, user_id, track_id):
         try:
             fav = UserFavouriteTrack.objects.get(user__id=user_id, track_id=track_id)
@@ -156,6 +174,12 @@ class UserAlbumDeleteView(generics.DestroyAPIView):
     queryset = UserCreatedAlbum.objects.all()
     permission_classes = [IsAuthenticated]
     lookup_field = 'album_id'
+
+    def delete(self, request, *args, **kwargs):
+        album = self.get_object()
+        if album.user != request.user:  # Kiểm tra quyền sở hữu
+            return Response({"detail": "Bạn không có quyền xóa album này."}, status=status.HTTP_403_FORBIDDEN)
+        return super().delete(request, *args, **kwargs)
 
 # POST /user/{id}/albums/{album_id}/add-tracks/
 class AddTracksToUserAlbumView(generics.GenericAPIView):

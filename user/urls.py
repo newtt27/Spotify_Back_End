@@ -1,9 +1,9 @@
 from django.urls import path
 from . import views
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path('', views.UserListAPIView.as_view(), name='user-list'),
-    path('csrf/', views.GetCSRFToken.as_view(), name='get-csrf-token'), 
     path('register/', views.RegisterView.as_view(), name='user-register'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
@@ -18,4 +18,6 @@ urlpatterns = [
     path('albums/<str:album_id>/rename/', views.UserAlbumRenameView.as_view(), name='rename-user-album'),
     path('albums/<str:album_id>/delete/', views.UserAlbumDeleteView.as_view(), name='delete-user-album'),
     path('<int:id>/albums/<str:album_id>/add-tracks/', views.AddTracksToUserAlbumView.as_view(), name='add-tracks-to-user-album'),
+    # JWT
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
