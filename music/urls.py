@@ -1,5 +1,5 @@
 from django.urls import path
-from music.views import GetTopCharts, GetSongByGerneName, GetSongBySearchName, GetArtistDetails, GetSongDetailsById, GetSongRelated, GetAlbumList, UpdateTrackViews
+from music.views import GetTopCharts, GetSongByGerneName, GetSongBySearchName, GetArtistDetails, GetSongDetailsById, GetSongDetailsByName, GetSongRelated, GetAlbumList, UpdateTrackViews
 
 urlpatterns = [
     path('tracks/<int:track_id>/play/', UpdateTrackViews.as_view(), name='update_track_views'),
@@ -8,6 +8,7 @@ urlpatterns = [
     path('tracks/search/', GetSongBySearchName.as_view(), name='get_songs_by_search'),
     path('tracks/artist/details/<str:artist_name>/', GetArtistDetails.as_view(), name='get_songs_by_artist'),
     path('tracks/tracksdetail/<int:track_id>/', GetSongDetailsById.as_view(), name='get_songs_by_track_id'),
+    path('tracks/tracksdetail/<str:track_name>/', GetSongDetailsByName.as_view(), name='get_songs_by_track_name'),
     path('tracks/related-song/<int:track_id>/', GetSongRelated.as_view(), name='get_related_songs'),
     path('tracks/albums/', GetAlbumList.as_view(), name='get_album_list'),
 ]

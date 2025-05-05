@@ -11,6 +11,8 @@ from music.serializers.tracks_serializers import TrackSerializer
 from music.serializers.albums_serializers import AlbumSerializer, AlbumDetailSerializer
 from music.serializers.artist_serializers import ArtistSerializer, ArtistDetailSerializer
 from music.serializers.genre_serializers import GenreSerializer
+#Import các utils cần thiết
+from music.utils import get_related_songs
 
 # Create your views here.
 class UpdateTrackViews(APIView):
@@ -97,11 +99,36 @@ class GetSongDetailsById(APIView):
     def get(self, request, track_id):
         track = get_object_or_404(Track, id=track_id)
         serializer = TrackSerializer(track, context={'request': request})
+        songs_data = serializer.data #Lấy dữ liệu bài hát hiện tại bỏ vào dictionary sonsgs_data
+
+        #Tìm các bài hát cùng genre với artist của bài hát hiện tại
+        related_tracks = get_related_songs(track, limit=5) #Lấy 5 bài hát liên quan
+        related_tracks_serializer = TrackSerializer(related_tracks, many=True, context={'request': request})
+        songs_data['relatedSongs'] = related_tracks_serializer.data  #Thêm các bài hát liên quan vào dữ liệu bài hát hiện tại
+
+
         response_data = {
-            "songDetails": serializer.data
+            "songDetails": songs_data
         }
         return Response(response_data, status=status.HTTP_200_OK)
+    
+class GetSongDetailsByName(APIView):
+    def get(self, request, track_name):
+        track = get_object_or_404(Track, name__iexact=track_name)
+        serializer = TrackSerializer(track, context={'request': request})
 
+        songs_data = serializer.data #Lấy dữ liệu bài hát hiện tại bỏ vào dictionary sonsgs_data
+
+        #Tìm các bài hát cùng genre với artist của bài hát hiện tại
+        related_tracks = get_related_songs(track, limit=5) #Lấy 5 bài hát liên quan
+        related_tracks_serializer = TrackSerializer(related_tracks, many=True, context={'request': request})
+        songs_data['relatedSongs'] = related_tracks_serializer.data  #Thêm các bài hát liên quan vào dữ liệu bài hát hiện tại
+
+        response_data = {
+            "songDetails": songs_data
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    
 class GetSongRelated(APIView):
     def get(self, request, track_id):
         #Tìm thông tin bài hát theo track_id 
