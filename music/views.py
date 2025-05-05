@@ -170,4 +170,11 @@ class GetAlbumList(APIView):
         }
         return Response(respone_data, status=status.HTTP_200_OK)
 
-        
+class GetGenreList(APIView):
+    def get(self, request):
+        genres = Genre.objects.all()
+        serializers = GenreSerializer(genres, many=True)
+        respone_data = {
+            "genres": serializers.data
+        }
+        return Response(respone_data, status=status.HTTP_200_OK)
