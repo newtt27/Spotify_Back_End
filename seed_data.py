@@ -44,7 +44,7 @@ artist3 = Artist.objects.create(
     followers = 3000000
 )
 artist4 = Artist.objects.create(
-    name = 'Fran Vasilíc',
+    name = 'Fran Vasilic',
     image_url = 'images/artists/fran-vasilic.jpg',
     followers = 4000000
 )

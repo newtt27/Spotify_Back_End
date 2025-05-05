@@ -93,7 +93,7 @@ class GetArtistDetails(APIView):
         }
         return Response(respones_data, status=status.HTTP_200_OK)
 
-class GetSongDetails(APIView):
+class GetSongDetailsById(APIView):
     def get(self, request, track_id):
         track = get_object_or_404(Track, id=track_id)
         serializer = TrackSerializer(track, context={'request': request})
