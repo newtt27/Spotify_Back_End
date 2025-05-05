@@ -123,7 +123,7 @@ DATABASES = {
 - Run the following script to populate test data:
 
 ```bash
-  py seeddata.py
+  py seed_data.py
 ```
 
 ## 7. Run the Server:
