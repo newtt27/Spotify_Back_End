@@ -215,7 +215,7 @@ track10 = Track.objects.create(
     album = album4,
     image_url = 'images/tracks/Hypotheticals.jpg',
     duration_ms = 212000,
-    video_url = 'videos/Fran Vasilic - Hypotheticals.mp4',
+    video_url = 'videos/Fran Vasilić - Hypotheticals.mp4',
     views = 100000
 )
 track11 = Track.objects.create(
