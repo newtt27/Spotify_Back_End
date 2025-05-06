@@ -24,8 +24,8 @@ class TrackSerializer(serializers.ModelSerializer):
         }
 
     def get_preview_url(self, obj):
-        if obj.album and obj.album.image_url:
-            return self.build_absolute_uri(obj.album.image_url.url)
+        if obj.image_url:
+            return self.build_absolute_uri(obj.image_url.url)
         return None
 
     def get_video_url(self, obj):
