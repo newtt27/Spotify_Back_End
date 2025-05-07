@@ -1,15 +1,13 @@
 from django.urls import path
-from music.views import GetTopCharts, GetSongByGerneName, GetSongBySearchName, GetArtistDetails, GetSongDetailsById, GetSongDetailsByName, GetSongRelated, GetAlbumList, UpdateTrackViews, GetGenreList
+from music.views import GetTopCharts, GetArtistDetailsById, GetSongDetailsById, GetAlbumList, UpdateTrackViews, GetGenreList, GetSongByGerneID
 
 urlpatterns = [
     path('tracks/<int:track_id>/play/', UpdateTrackViews.as_view(), name='update_track_views'),
     path('topcharts/', GetTopCharts.as_view(), name='get_top_charts'),
-    path('tracks/genre/<str:genre_name>/', GetSongByGerneName.as_view(), name='get_songs_by_genre'),
+    path('tracks/genre/<int:genre_id>/', GetSongByGerneID.as_view(), name='get_songs_by_genre_id'),
     path('genre/', GetGenreList.as_view(), name='get_genre_list'),  
-    path('tracks/search/', GetSongBySearchName.as_view(), name='get_songs_by_search'),
-    path('artist/details/<str:artist_name>/', GetArtistDetails.as_view(), name='get_songs_by_artist'),
+    # path('tracks/search/', GetSongBySearchName.as_view(), name='get_songs_by_search'),
+    path('artist/details/<int:artist_id>/', GetArtistDetailsById.as_view(), name='get_songs_by_artist_id'),
     path('tracks/tracksdetail/<int:track_id>/', GetSongDetailsById.as_view(), name='get_songs_by_track_id'),
-    path('tracks/tracksdetail/<str:track_name>/', GetSongDetailsByName.as_view(), name='get_songs_by_track_name'),
-    path('tracks/related-song/<int:track_id>/', GetSongRelated.as_view(), name='get_related_songs'),
     path('tracks/albums/', GetAlbumList.as_view(), name='get_album_list'),
 ]

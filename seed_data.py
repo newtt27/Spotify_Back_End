@@ -4,7 +4,7 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'spotify_back_end.settings')
 django.setup()
 
-from music.models import Track, Album, Artist, ArtistGenre, Genre
+from music.models import Track, Album, Artist, Genre
 from user.models import User, UserFavouriteTrack, UserCreatedAlbum, UserCreatedAlbumTrack
 
 # Xóa tất cả các đối tượng trong bảng trước khi thêm mới
@@ -18,7 +18,7 @@ from user.models import User, UserFavouriteTrack, UserCreatedAlbum, UserCreatedA
 # ArtistGenre.objects.all().delete()
 
 #Tạo gerne
-pop = Genre.objects.create(name='Pop')
+Pop = Genre.objects.create(name='Pop')
 RnB = Genre.objects.create(name='R&B')
 Indie_Pop = Genre.objects.create(name='Indie Pop')
 Lofi = Genre.objects.create(name='Lo-fi')
@@ -27,6 +27,10 @@ Bedroom_Pop = Genre.objects.create(name='Bedroom Pop')
 Alternative_RnB = Genre.objects.create(name='Alternative R&B')
 Soul = Genre.objects.create(name='Soul')
 Indie = Genre.objects.create(name='Indie')
+Trap = Genre.objects.create(name='Trap')
+Lofi_Electropop = Genre.objects.create(name='Lo-fi Electropop')
+Gospel = Genre.objects.create(name='Gospel')
+
 #Tạo artist
 artist1 = Artist.objects.create(
     name = 'Joji',
@@ -54,56 +58,6 @@ artist5 = Artist.objects.create(
     followers = 500000
 )
 
-#Tạo ArtistGenre
-artist1_genre1 = ArtistGenre.objects.create(
-    artist = artist1,
-    genre = Lofi
-)
-artist1_genre2 = ArtistGenre.objects.create(
-    artist = artist1,
-    genre = Alternative_RnB
-)
-artist1_genre3 = ArtistGenre.objects.create(
-    artist = artist1,
-    genre = Indie_Pop
-)
-artist2_genre1 = ArtistGenre.objects.create(
-    artist = artist2,
-    genre = RnB
-)
-artist2_genre2 = ArtistGenre.objects.create(
-    artist = artist2,
-    genre = Soul
-)
-artist2_genre3 = ArtistGenre.objects.create(
-    artist = artist2,
-    genre = Indie
-)
-artist3_genre1 = ArtistGenre.objects.create(
-    artist = artist3,
-    genre = Indie_Pop
-)
-artist3_genre2 = ArtistGenre.objects.create(
-    artist = artist3,
-    genre = Alternative_RnB
-)
-artist3_genre3 = ArtistGenre.objects.create(
-    artist = artist3,
-    genre = Lofi
-)
-artist4_genre1 = ArtistGenre.objects.create(
-    artist = artist4,
-    genre = Indie_Rock
-)
-artist4_genre2 = ArtistGenre.objects.create(
-    artist = artist4,
-    genre = Bedroom_Pop
-)
-artist5_genre1 = ArtistGenre.objects.create(
-    artist = artist5,
-    genre = Alternative_RnB
-)
-
 #Tạo albums
 album1 = Album.objects.create(
     name = 'Nectar',
@@ -125,7 +79,6 @@ album4 = Album.objects.create(
     artist = artist4,
     image_url = 'images/albums/Retrovisor.jpg'
 )
-
 
 #Tạo tracks
 track1 = Track.objects.create(
@@ -226,6 +179,19 @@ track11 = Track.objects.create(
     duration_ms = 194000,
     video_url = 'videos/Television _ So Far So Good.mp4',
 )
+
+#Tạo Genre cho Track
+track1.genres.add(Pop, Alternative_RnB, Indie_Pop, Soul)
+track2.genres.add(Pop, Indie_Pop, Soul, Lofi)
+track3.genres.add(RnB, Soul, Indie_Pop, Lofi)
+track4.genres.add(Pop, RnB, Indie_Pop, Lofi)
+track5.genres.add(Lofi_Electropop, RnB, Pop, Soul, Lofi)
+track6.genres.add(Indie_Pop, Soul, Pop, Gospel)
+track7.genres.add(Alternative_RnB, Soul, Pop, Lofi)
+track8.genres.add(Indie_Pop, RnB, Lofi)
+track9.genres.add(Indie_Pop, RnB, Lofi, Soul)
+track10.genres.add(Indie_Pop, Alternative_RnB)
+track11.genres.add(Indie_Pop, Lofi)
 
 #Tạo User
 user1 = User.objects.create_user(

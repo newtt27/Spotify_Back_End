@@ -1,10 +1,6 @@
 from .models import Track, Genre, Artist
 
-def get_related_songs(track, limit=10):
-    genres = Genre.objects.filter(artists__artist=track.artist).distinct()
-    related_artists = Artist.objects.filter(genres__genre__in=genres).exclude(id=track.artist.id).distinct()
-    related_tracks = Track.objects.filter(
-        artist__in=related_artists
-    ).exclude(id=track.id).distinct()[:limit]
-
+def get_related_songs_by_genre(track, limit=5):
+    track_genres =  Track.objects.filter(id=track.id).values_list('genres', flat=True) #Lấy tất cả các thể loại của bài hát hiện tại
+    related_tracks = Track.objects.filter(genres__in=track_genres).exclude(id=track.id).distinct().order_by('?')[:limit] #Lấy ngẫu nhiên bài hát cùng thể loại với bài hát hiện tại
     return related_tracks

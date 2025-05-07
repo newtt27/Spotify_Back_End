@@ -2,16 +2,18 @@ from rest_framework import serializers
 from music.models import Track
 from music.serializers.albums_serializers import AlbumSerializer
 from music.serializers.artist_serializers import ArtistSerializer
+from music.serializers.genre_serializers import GenreSerializer
 
 class TrackSerializer(serializers.ModelSerializer):
     album = AlbumSerializer()
     artist = ArtistSerializer()
-    preview_url = serializers.SerializerMethodField() # using picture_url for preview_url
+    genres = GenreSerializer(many=True, read_only=True)
+    preview_url = serializers.SerializerMethodField() # using track.image_url for preview_url
     video_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Track
-        fields = ['id', 'name', 'artist', 'album', 'duration_ms', 'preview_url', 'video_url']
+        fields = ['id', 'name', 'genres', 'artist', 'album', 'duration_ms', 'preview_url', 'video_url']
 
     def get_album(self, obj):
         album = obj.album
