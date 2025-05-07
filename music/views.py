@@ -42,7 +42,7 @@ class GetTopCharts(APIView):
         }
         return Response(response_data, status=status.HTTP_200_OK)
 
-class GetSongByGerneID(APIView):
+class GetSongByGenreID(APIView):
     def get(self, request, genre_id):
         genres = get_object_or_404(Genre, id=genre_id) #Nếu tìm thấy thì trả về object, k thì trả về 404
         
@@ -64,12 +64,12 @@ class GetSongBySearchName(APIView):
         # Lấy tham số tìm kiếm từ query string
         search_name = request.query_params.get('search_name', None)
         
-        if not search_name:
-            return Response({"detail": "No search name provided."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Truy vấn nhạc theo tên
-        tracks = Track.objects.filter(Q(name__icontains=search_name))  # Truy vấn nhạc theo tên bài hát
-        
+        if search_name:
+            # Truy vấn nhạc theo tên
+            tracks = Track.objects.filter(Q(name__icontains=search_name)) 
+        else:
+            tracks = Track.objects.all() #Nếu không có tham số tìm kiếm thì lấy tất cả bài hát
+            
         if not tracks.exists():
             return Response({"message": "No songs found for this name."}, status=status.HTTP_404_NOT_FOUND)
         
