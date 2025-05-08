@@ -19,7 +19,13 @@ The backend follows RESTful API principles and is built with Django's robust fea
 - Database: PostgreSQL
 - API Protocol: REST
 
-## API Endpoints 📌
+# Table of Contents - TOC
+
+- [📌 API Endpoints](#api-endpoints-📌)
+- [⚙️ Setup and Installation](#setup-and-installation-⚙️)
+- [📄 License](#license-📄)
+
+# API Endpoints 📌
 
 **Base URL (local)**: `http://127.0.0.1:8000/api/`
 
