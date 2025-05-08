@@ -21,11 +21,11 @@ The backend follows RESTful API principles and is built with Django's robust fea
 
 # Table of Contents - TOC
 
-- [📌 API Endpoints](#api-endpoints-)
-- [⚙️ Setup and Installation](#setup-and-installation-)
-- [📄 License](#license-)
+- [📌 API Endpoints](#api-endpoints)
+- [⚙️ Setup and Installation](#setup-and-installation)
+- [📄 License](#license)
 
-# API Endpoints 📌
+# 📌 API Endpoints
 
 **Base URL (local)**: `http://127.0.0.1:8000/api/`
 
@@ -54,7 +54,7 @@ The backend follows RESTful API principles and is built with Django's robust fea
 | `/user/{user_id}/albums/{album_id}/add-tracks/`  | POST   | Path params: `user_id`, `album_id`, JSON: `track_ids`      | Add tracks to a custom album. Example: `/user/3/albums/album1/add-tracks/`, `{"track_ids": [1, 2, 3]}`.                      |
 | `/user/token/refresh/`                           | POST   | JSON: `"refresh": "your_refresh_token_here"`               | Refresh the token for authentication.                                                                                        |
 
-# Setup and Installation ⚙️
+# ⚙️ Setup and Installation
 
 ## 1. Create a Virtual Environment
 
@@ -154,6 +154,6 @@ django-admin startproject 'project-name' .
 python manage.py startapp 'app-name'
 ```
 
-# 📄LICENSE
+# 📄 LICENSE
 
 - This project is licensed under the MIT License. See the LICENSE file for details.
