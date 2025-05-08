@@ -85,7 +85,7 @@ class GetSongBySearchName(APIView):
 class GetArtistDetailsById(APIView):
     def get(self, request, artist_id):
         artist = get_object_or_404(Artist, id=artist_id)
-        serializer = ArtistDetailSerializer(artist)
+        serializer = ArtistDetailSerializer(artist, context={'request': request})
         respones_data = {
             "artistDetails": serializer.data
         }
@@ -111,7 +111,7 @@ class GetSongDetailsById(APIView):
 class GetAlbumList(APIView):
     def get(self, request):
         albums = Album.objects.all()
-        serializers = AlbumDetailSerializer(albums, many=True)
+        serializers = AlbumDetailSerializer(albums, many=True, context={'request': request})
         respone_data = {
             "albums": serializers.data
         }
