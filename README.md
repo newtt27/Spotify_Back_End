@@ -21,9 +21,9 @@ The backend follows RESTful API principles and is built with Django's robust fea
 
 # Table of Contents - TOC
 
-- [📌 API Endpoints](#api-endpoints)
-- [⚙️ Setup and Installation](#setup-and-installation)
-- [📄 License](#license)
+- [📌 API Endpoints](#api-endpoints-)
+- [⚙️ Setup and Installation](#setup-and-installation-)
+- [📄 License](#license-)
 
 # 📌 API Endpoints
 
