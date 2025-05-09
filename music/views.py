@@ -5,6 +5,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+import os
+from django.http import FileResponse, Http404
 #Import các model và serializer cần thiết
 from music.models import Track, Genre, Album, Artist
 from music.serializers.tracks_serializers import TrackSerializer
@@ -125,3 +127,22 @@ class GetGenreList(APIView):
             "genres": serializers.data
         }
         return Response(respone_data, status=status.HTTP_200_OK)
+
+class DownloadTrack(APIView):
+    def get(self, request, track_id):
+        try: 
+            track = get_object_or_404(Track, id=track_id)
+
+            if not track.video_url:
+                return Response({"message": "No video URL available for this track."}, status=status.HTTP_404_NOT_FOUND)
+            
+            file_path = track.video_url.path  # Lấy đường dẫn đến file video
+            if os.path.exists(file_path):
+                    response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
+                    return response
+            else:
+                    return Response({"detail": "File not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Track.DoesNotExist:
+            return Response({"detail": "Track not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        
