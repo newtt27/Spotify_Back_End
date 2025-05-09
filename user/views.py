@@ -48,7 +48,6 @@ class LoginView(APIView):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            # Tạo refresh token và access token
             refresh = RefreshToken.for_user(user)
             
             # Lưu access_token vào session
@@ -146,12 +145,8 @@ class UserAlbumListView(generics.ListAPIView):
 class UserAlbumCreateView(generics.CreateAPIView):
     serializer_class = UserCreatedAlbumSerializer
     permission_classes = [IsAuthenticated]
-<<<<<<< HEAD
-    parser_classes = [MultiPartParser, FormParser]  #  chấp nhận upload file:
-=======
     parser_classes = [JSONParser, MultiPartParser, FormParser]
 
->>>>>>> 0e275def484c622dbe6e983898889d5ff35beede
     def create(self, request, *args, **kwargs):
         user = get_object_or_404(User, id=kwargs['id'])
         data = request.data.copy()
