@@ -8,6 +8,7 @@ class UserCreatedAlbumSerializer(serializers.ModelSerializer):
     artist = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     tracks = serializers.SerializerMethodField()
+    image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = UserCreatedAlbum
@@ -55,11 +56,11 @@ class UserCreatedAlbumSerializer(serializers.ModelSerializer):
             }
         return None
 
-    def get_image(self, obj):
-        album = self.get_album_instance(obj.album_id)
-        if album and album.image_url:
-            return self.build_absolute_uri(album.image_url.url)
-        return None
+    # def get_image(self, obj):
+    #     album = self.get_album_instance(obj.album_id)
+    #     if album and album.image_url:
+    #         return self.build_absolute_uri(album.image_url.url)
+    #     return None
 
     def get_tracks(self, obj):
         request = self.context.get('request')  # Lấy request từ context
@@ -72,6 +73,13 @@ class UserCreatedAlbumSerializer(serializers.ModelSerializer):
         if request is not None and relative_path:
             return request.build_absolute_uri(relative_path)
         return relative_path
+    
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        request = self.context.get('request')
+        if instance.image and request:
+            rep['image'] = request.build_absolute_uri(instance.image.url)
+        return rep
 
 class AddTracksToAlbumSerializer(serializers.Serializer):
     # Không cần truyền album_id trong serializer vì nó đã được lấy từ URL (kwargs['album_id']) trong view.
