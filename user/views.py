@@ -4,6 +4,7 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.parsers import MultiPartParser, FormParser
 import re
 
 from music.models import Track
@@ -55,6 +56,7 @@ class LoginView(APIView):
             return Response({
                 'access_token': str(refresh.access_token),
                 'refresh_token': str(refresh),
+                'userId': user.id,
                 'message': 'Đăng nhập thành công'
             }, status=status.HTTP_200_OK)
 
@@ -143,7 +145,7 @@ class UserAlbumListView(generics.ListAPIView):
 class UserAlbumCreateView(generics.CreateAPIView):
     serializer_class = UserCreatedAlbumSerializer
     permission_classes = [IsAuthenticated]
-
+    parser_classes = [MultiPartParser, FormParser]  #  chấp nhận upload file:
     def create(self, request, *args, **kwargs):
         user = get_object_or_404(User, id=kwargs['id'])
         data = request.data.copy()
