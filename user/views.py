@@ -11,7 +11,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from music.models import Track
 from user.models import User
 from .models import UserFavouriteTrack, UserCreatedAlbum, UserCreatedAlbumTrack  
-from .serializers.User_Serializer import UserSerializer
+from .serializers.User_Serializer import UserSerializer, UserUpdateSerializer
 from .serializers.User_Register import UserRegisterSerializer
 from .serializers.User_FavouriteTracks import UserFavouriteTrackSerializer
 from .serializers.UserCreatedAlbum_Serializer import UserCreatedAlbumSerializer, AddTracksToAlbumSerializer
@@ -19,7 +19,20 @@ from django.middleware.csrf import get_token
 
 # API login + cấp token trong một bước duy nhất
 from rest_framework_simplejwt.tokens import RefreshToken
-    
+
+# PATCH /user/update/
+class UserUpdateView(APIView):
+    permission_classes = [IsAuthenticated]  # Chỉ người dùng đã đăng nhập mới có quyền cập nhật
+
+    def patch(self, request, *args, **kwargs):
+        user = request.user  # Lấy người dùng từ request (giả sử đã đăng nhập)
+        serializer = UserUpdateSerializer(user, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User name updated successfully!", "data": serializer.data}, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
 # GET
 class UserListAPIView(APIView):
     def get(self, request, *args, **kwargs):
@@ -160,20 +173,26 @@ class UserAlbumCreateView(generics.CreateAPIView):
 
 
 
-# PUT /albums/{album_id}/
-class UserAlbumRenameView(generics.UpdateAPIView):
+# PATCH /albums/{album_id}/edit/
+class UserAlbumEditView(generics.UpdateAPIView):
     queryset = UserCreatedAlbum.objects.all()
     serializer_class = UserCreatedAlbumSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'album_id'
+    parser_classes = [MultiPartParser, FormParser]
 
     def patch(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.name = request.data.get('name', instance.name)
-        instance.save()
-        return Response(self.get_serializer(instance).data)
+        data = request.data
 
-# DELETE /albums/{album_id}/
+        instance.name = data.get('name', instance.name)
+        if 'image' in data or 'image' in request.FILES:
+            instance.image = data.get('image') or request.FILES.get('image')
+        instance.save()
+
+        return Response(self.get_serializer(instance, context={'request': request}).data)
+
+# DELETE /albums/{album_id}/delete/
 class UserAlbumDeleteView(generics.DestroyAPIView):
     queryset = UserCreatedAlbum.objects.all()
     permission_classes = [IsAuthenticated]

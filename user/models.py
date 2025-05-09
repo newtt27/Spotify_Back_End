@@ -25,6 +25,7 @@ class UserCreatedAlbum(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_albums')
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='images/albums/', null=True, blank=True)
+    artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} by {self.user.name}"
