@@ -21,4 +21,4 @@ class AlbumDetailSerializer(serializers.ModelSerializer):
     def get_tracks(self, obj):
         from music.serializers.tracks_serializers import TrackSerializer
         tracks = obj.tracks.filter(album=obj)
-        return TrackSerializer(tracks, many=True).data
+        return TrackSerializer(tracks, many=True, context=self.context).data

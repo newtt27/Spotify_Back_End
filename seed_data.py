@@ -39,7 +39,7 @@ artist1 = Artist.objects.create(
 )
 artist2 = Artist.objects.create(
     name = 'Luke Chiang',
-    image_url = 'images/artists/luke-chiang.jpg',
+    image_url = 'images/artists/luke-chiang_lSTnFhJ.jpg',
     followers = 2000000
 )
 artist3 = Artist.objects.create(
@@ -49,7 +49,7 @@ artist3 = Artist.objects.create(
 )
 artist4 = Artist.objects.create(
     name = 'Fran Vasilic',
-    image_url = 'images/artists/fran-vasilic.jpg',
+    image_url = 'images/artists/franvasilic.jpg',
     followers = 4000000
 )
 artist5 = Artist.objects.create(

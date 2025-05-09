@@ -9,6 +9,7 @@ class UserCreatedAlbumSerializer(serializers.ModelSerializer):
     # image = serializers.SerializerMethodField()
     image = serializers.ImageField(required=False, allow_null=True)
     tracks = serializers.SerializerMethodField()
+    image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = UserCreatedAlbum

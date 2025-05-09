@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
 import re
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 from music.models import Track
 from user.models import User
@@ -141,11 +142,16 @@ class UserAlbumListView(generics.ListAPIView):
     def get_queryset(self):
         return UserCreatedAlbum.objects.filter(user__id=self.kwargs['id'])
 
-# POST /user/{id}/albums/
+# POST /user/{id}/albums/create/
 class UserAlbumCreateView(generics.CreateAPIView):
     serializer_class = UserCreatedAlbumSerializer
     permission_classes = [IsAuthenticated]
+<<<<<<< HEAD
     parser_classes = [MultiPartParser, FormParser]  #  chấp nhận upload file:
+=======
+    parser_classes = [JSONParser, MultiPartParser, FormParser]
+
+>>>>>>> 0e275def484c622dbe6e983898889d5ff35beede
     def create(self, request, *args, **kwargs):
         user = get_object_or_404(User, id=kwargs['id'])
         data = request.data.copy()
