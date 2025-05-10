@@ -6,7 +6,13 @@ from music.serializers.genre_serializers import GenreSerializer
 class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'image_url', 'tracks']
+
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.image_url and request:
+            return request.build_absolute_uri(obj.image_url.url)
+        return None
 
 
 class ArtistDetailSerializer(serializers.ModelSerializer):

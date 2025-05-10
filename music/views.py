@@ -9,7 +9,7 @@ import os
 from django.http import FileResponse, Http404
 #Import các model và serializer cần thiết
 from music.models import Track, Genre, Album, Artist
-from music.serializers.tracks_serializers import TrackSerializer
+from music.serializers.tracks_serializers import TrackCreateSerializer, TrackSerializer
 from music.serializers.albums_serializers import AlbumSerializer, AlbumDetailSerializer
 from music.serializers.artist_serializers import ArtistSerializer, ArtistDetailSerializer
 from music.serializers.genre_serializers import GenreSerializer
@@ -145,4 +145,27 @@ class DownloadTrack(APIView):
         except Track.DoesNotExist:
             return Response({"detail": "Track not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        
+class CreateTrack(APIView):
+    def post(self, request):
+        serializer = TrackCreateSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            track = serializer.save()
+            response_serializer = TrackSerializer(track, context={'request': request})
+            return Response({"track": response_serializer.data}, status=status.HTTP_201_CREATED)
+        return Response({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+class GetTotalAlbums(APIView):
+    def get(self, request):
+        total_albums = Album.objects.count()
+        return Response({"totalAlbums": total_albums}, status=status.HTTP_200_OK)
+
+class GetTotalTracks(APIView):
+    def get(self, request):
+        total_tracks = Track.objects.count()
+        return Response({"totalTracks": total_tracks}, status=status.HTTP_200_OK)
+    
+class GetArtistList(APIView):
+    def get(self, request):
+        artists = Artist.objects.all()
+        serializer = ArtistSerializer(artists, many=True, context={'request': request})
+        return Response({"artists": serializer.data}, status=status.HTTP_200_OK)

@@ -46,7 +46,7 @@ class Album(models.Model):
 class Track(models.Model):
     name = models.CharField(max_length=255)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='tracks')
-    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='tracks')
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='tracks', null=True, blank=True)
     duration_ms = models.IntegerField()
     # preview_url = models.URLField(max_length=255, blank=True, null=True)
     genres = models.ManyToManyField(Genre, related_name='tracks', blank=True)
