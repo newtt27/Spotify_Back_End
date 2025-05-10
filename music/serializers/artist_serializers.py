@@ -20,4 +20,4 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
     def get_top_songs(self, obj):
         from music.serializers.tracks_serializers import TrackSerializer
         top_songs = obj.tracks.filter(artist=obj).order_by('-views')[:5]
-        return TrackSerializer(top_songs, many=True).data
+        return TrackSerializer(top_songs, many=True, context=self.context).data
