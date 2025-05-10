@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'name', 'email', 'albums']
+        fields = ['id', 'name', 'email', 'albums', 'role'] # role sẽ không được phép thay đổi
 
     def get_albums(self, obj):
         albums = obj.created_albums.all()
@@ -16,4 +16,4 @@ class UserSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['name']
+        fields = ['name'] # Chỉ cho phép cập nhật tên

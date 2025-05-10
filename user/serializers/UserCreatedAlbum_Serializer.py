@@ -5,40 +5,23 @@ from music.serializers.tracks_serializers import TrackSerializer
 import re  # dùng để tách số từ chuỗi
 
 class UserCreatedAlbumSerializer(serializers.ModelSerializer):
-    artist = serializers.SerializerMethodField()
-    artist_id = serializers.IntegerField(write_only=True, required=False)
-    # image = serializers.SerializerMethodField()
+    # artist = serializers.SerializerMethodField()
+    # artist_id = serializers.IntegerField(write_only=True, required=False)
     image = serializers.ImageField(required=False, allow_null=True) # cho phép người dùng upload ảnh local (qua multipart/form-data).
     tracks = serializers.SerializerMethodField()
 
     class Meta:
         model = UserCreatedAlbum
-        fields = ['album_id', 'name', 'artist', 'artist_id', 'image', 'tracks']
-        read_only_fields = ['album_id', 'artist']  # Đảm bảo rằng album_id, artist chỉ để hiển thị (không yêu cầu từ client)
+        fields = ['album_id', 'name', 'image', 'tracks']
+        read_only_fields = ['album_id']  # Đảm bảo rằng album_id chỉ để hiển thị (không yêu cầu từ client)
 
     def create(self, validated_data):
-        # Lấy artist_id từ validated_data
-        artist_id = validated_data.pop('artist_id', None)
-        if not artist_id:
-            raise serializers.ValidationError({'artist_id': 'This field is required.'})
-
         # Tạo album_id nếu không có
         album_id = self.context['request'].data.get('album_id', None)
         if not album_id:
             album_id = self.generate_unique_album_id()
         validated_data['album_id'] = album_id
         validated_data['user'] = self.context['request'].user  # nếu cần, đảm bảo rằng bạn gán đúng người dùng
-
-        # # Nếu album_instance tồn tại, gán artist_id vào
-        # album_instance = self.get_album_instance(album_id)
-        # if album_instance:
-        #     album_instance.artist_id = artist_id  # Cập nhật artist vào album
-        #     album_instance.save()
-        # else:
-        #     # Nếu không có album, bạn cần tạo album mới
-        #     validated_data['artist_id'] = artist_id  # Gán artist_id vào validated_data
-        # Gán artist_id vào validated_data
-        validated_data['artist_id'] = artist_id
 
         # Tạo đối tượng UserCreatedAlbum
         return super().create(validated_data)
@@ -57,14 +40,6 @@ class UserCreatedAlbumSerializer(serializers.ModelSerializer):
         match = re.search(r'\d+', album_id)
         return int(match.group()) if match else None
     
-    # def get_album_instance(self, album_id):
-    #     pk = self.extract_album_pk(album_id)
-    #     if pk is not None:
-    #         try:
-    #             return Album.objects.get(pk=pk)
-    #         except Album.DoesNotExist:
-    #             return None
-    #     return None
     def get_album_instance(self, album_id):
         # Lấy phần số cuối của album_id, ví dụ: 'album1' -> 1
         pk = self.extract_album_pk(album_id)
@@ -75,29 +50,6 @@ class UserCreatedAlbumSerializer(serializers.ModelSerializer):
             except UserCreatedAlbum.DoesNotExist:
                 return None
         return None
-
-    def get_artist(self, obj):
-        # Sử dụng album_id để lấy Album gốc nếu cần, hoặc cũng có thể trả về từ artist_id
-        album = self.get_album_instance(obj.album_id)
-        if album and album.artist:
-            return {
-                'id': album.artist.id,
-                'name': album.artist.name
-            }
-        elif hasattr(self, '_artist_id'):
-            try:
-                from music.models import Artist
-                artist = Artist.objects.get(pk=self._artist_id)
-                return {'id': artist.id, 'name': artist.name}
-            except Artist.DoesNotExist:
-                return None
-        return None
-
-    # def get_image(self, obj):
-    #     album = self.get_album_instance(obj.album_id)
-    #     if album and album.image_url:
-    #         return self.build_absolute_uri(album.image_url.url)
-    #     return None
 
     def get_tracks(self, obj):
         request = self.context.get('request')  # Lấy request từ context
