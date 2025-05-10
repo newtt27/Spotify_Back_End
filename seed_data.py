@@ -193,37 +193,52 @@ track9.genres.add(Indie_Pop, RnB, Lofi, Soul)
 track10.genres.add(Indie_Pop, Alternative_RnB)
 track11.genres.add(Indie_Pop, Lofi)
 
-#Tạo User
+# Tạo Admin User
+admin_user = User.objects.create_user(
+    username='admin',
+    password='admin',
+    name='Administrator',
+    email='admin@example.com',
+    role='admin'
+)
+
+# Tạo các User thường
 user1 = User.objects.create_user(
-    username = 'user1',
-    password = 'password123',
-    name = 'User One',
-    email = 'user1@Gmail.com'
+    username='user1',
+    password='password123',
+    name='User One',
+    email='user1@gmail.com',
+    role='user'
 )
 user2 = User.objects.create_user(
-    username = 'user2',
-    password = 'password123',
-    name = 'User Two',
-    email = 'user2@Gmail.com'
+    username='user2',
+    password='password123',
+    name='User Two',
+    email='user2@gmail.com',
+    role='user'
 )
 user3 = User.objects.create_user(
-    username = 'user3',
-    password = 'password123',
-    name = 'User Three',
-    email = 'user3@gmail.com'
+    username='user3',
+    password='password123',
+    name='User Three',
+    email='user3@gmail.com',
+    role='user'
 )
 user4 = User.objects.create_user(
-    username = 'user4',
-    password = 'password123',
-    name = 'User Four',
-    email = 'user4@gmail.com'
+    username='user4',
+    password='password123',
+    name='User Four',
+    email='user4@gmail.com',
+    role='user'
 )
 user5 = User.objects.create_user(
-    username = 'moctan137',
-    password = 'password123',
-    name = 'Nghĩa Tân',
-    email = 'moctan137@gmail.com'
+    username='moctan137',
+    password='password123',
+    name='Nghĩa Tân',
+    email='moctan137@gmail.com',
+    role='user'
 )
+
 #Tạo UserFavouriteTrack
 user_fav_track1 = UserFavouriteTrack.objects.create(
     user = user1,

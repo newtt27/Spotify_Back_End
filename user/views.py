@@ -43,7 +43,11 @@ class UserListAPIView(APIView):
 # POST
 class RegisterView(APIView):
     def post(self, request):
-        serializer = UserRegisterSerializer(data=request.data)
+        # Thêm role='user' vào data mặc định khi người dùng đăng ký
+        data = request.data.copy()
+        data['role'] = data.get('role', 'user')  # Mặc định role là 'user' nếu không có trong request
+
+        serializer = UserRegisterSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "User registered successfully!"}, status=status.HTTP_201_CREATED)
@@ -98,6 +102,7 @@ class MeView(APIView):
             "username": user.username,
             "email": user.email,
             "name": user.name,
+            "role": user.role,
         }
 
         # Gọi trực tiếp hàm xử lý nếu muốn tái sử dụng logic, không dùng HTTP

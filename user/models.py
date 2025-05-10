@@ -4,8 +4,14 @@ from django.contrib.auth.models import AbstractUser
 
 # User model
 class User(AbstractUser):
+    ROLE_CHOICES = (
+        ('admin', 'Admin'),
+        ('user', 'User'),
+    )
+
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)  # Email duy nhất
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')  # Chỉ 'admin' và 'user'(default)
 
     def __str__(self):
         return self.username  
@@ -25,7 +31,7 @@ class UserCreatedAlbum(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_albums')
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='images/albums/', null=True, blank=True)
-    artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True, blank=True)
+    # artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} by {self.user.name}"
