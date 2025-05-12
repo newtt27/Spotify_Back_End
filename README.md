@@ -1,95 +1,95 @@
 # SpotifyClone-Backend 🎵
 
-The backend of the **Spotify Clone** project, built with **Django** and **PostgreSQL**.
+Phần backend của dự án **Spotify Clone**, được xây dựng bằng **Django** và **PostgreSQL**.
 
-This project provides APIs for music streaming, including features like searching songs, getting top charts, filtering by genre, and retrieving songs by artist. The backend is designed to handle user requests and deliver relevant music data to the frontend.
+Dự án này cung cấp các API để phát nhạc trực tuyến, bao gồm các tính năng như tìm kiếm bài hát, lấy bảng xếp hạng, lọc theo thể loại và truy xuất bài hát theo nghệ sĩ. Backend được thiết kế để xử lý các yêu cầu của người dùng và cung cấp dữ liệu âm nhạc phù hợp cho giao diện frontend.
 
-## Features:
+## Tính năng:
 
-- User authentication and management
-- Music search by name, genre, or artist
-- Top charts retrieval
-- Integration with PostgreSQL database for efficient data storage
+- Xác thực và quản lý người dùng
+- Tìm kiếm bài hát theo tên, thể loại hoặc nghệ sĩ
+- Lấy bảng xếp hạng các bài hát
+- Tích hợp với cơ sở dữ liệu PostgreSQL để lưu trữ dữ liệu hiệu quả
 
-The backend follows RESTful API principles and is built with Django's robust features for scalability and flexibility.
+Backend tuân theo nguyên tắc RESTful API và được xây dựng dựa trên các tính năng mạnh mẽ của Django, đảm bảo khả năng mở rộng và linh hoạt.
 
-**Technologies**:
+**Công nghệ**:
 
-- Backend Framework: Django
-- Database: PostgreSQL
-- API Protocol: REST
+- Framework Backend: Django
+- Cơ sở dữ liệu: PostgreSQL
+- Giao thức API: REST
 
-# Table of Contents - TOC
+# Mục lục - TOC
 
-- [📌 API Endpoints](#api-endpoints-)
-- [⚙️ Setup and Installation](#setup-and-installation-%EF%B8%8F)
-- [📄 License](#license-)
+- [📌 Các Endpoint API](#api-endpoints-)
+- [⚙️ Thiết lập và Cài đặt](#setup-and-installation-️)
+- [📄 Giấy phép](#license-)
 
-# API Endpoints 📌
+# Các Endpoint API 📌
 
-**Base URL (local)**: `http://127.0.0.1:8000/api/`
+**Base URL (cục bộ)**: `http://127.0.0.1:8000/api/`
 
 | Endpoint                                         | Method | Params                                                           | Description                                                                                                                  |
 | ------------------------------------------------ | ------ | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `/music/topcharts/`                              | GET    | –                                                                | Get top chart songs. Returns a list of tracks in the top charts.                                                             |
-| `/music/tracks/<int:track_id>/play/`             | PATCH  | `track_id` in URL path                                           | Update track views. Increment the view count of a track by ID. Example: `/tracks/9/play`.                                    |
-| `/music/genre/`                                  | GET    | –                                                                | Return a list of available music genres.                                                                                     |
-| `/music/tracks/genre/<int:genre_id>/`            | GET    | `genre_id` in URL path                                           | Get songs by genre. Example: `/genre/10/`. Returns songs of the specified genre.                                             |
-| `/music/tracks/search/`                          | GET    | `search_name` in query string                                    | Search songs by name. Example: `?search_name=love`. Returns matching tracks.                                                 |
-| `/music/artist/details/<int:artist_id>/`         | GET    | `artist_id` in URL path                                          | Get artist details and their top tracks and albums. Example: `/artist/1/`.                                                   |
-| `/music/tracks/tracksdetail/<int:track_id>/`     | GET    | `track_id` in URL path                                           | Get full details of a specific song by ID and related songs (by genre). Example: `/tracksdetail/8/`.                         |
-| `/music/tracks/albums/`                          | GET    | –                                                                | Get a list of all albums including artist info, image, and tracks.                                                           |
-| `/music/tracks/download/<int:track_id>`          | GET    | `track_id` in URL path                                           | Download the media file (mp4) of a specific track by its ID.                                                                 |
-| `/user/`                                         | GET    | –                                                                | Get the list of users with detailed information. Returns a list of users.                                                    |
-| `/user/register/`                                | POST   | JSON: `username`, `email`, `name`, `password`, `password2`       | Register a new user after validating the provided information.                                                               |
-| `/user/login/`                                   | POST   | JSON: `username`, `password`                                     | Login and create a session after validating the provided information.                                                        |
-| `/user/logout/`                                  | POST   | –                                                                | Logout and delete the current session.                                                                                       |
-| `/user/me/`                                      | GET    | –                                                                | Get personal information of the logged-in user. Returns the user’s information.                                              |
-| `/user/update/`                                  | PATCH  | JSON: `name`         |                                           | Update user's name. |
-| `/user/<int:user_id>/favourites/`                | POST   | Path params: `user_id`, JSON: `track_id`                         | Add a track to the user's favourites list. Example: `/user/3/favourites/`.                                                   |
-| `/user/<int:user_id>/favourites/<int:track_id>/` | DELETE | Path params: `user_id`, `track_id`                               | Remove a track from the user's favourites list. Example: `/user/3/favourites/1/`.                                            |
-| `/user/<int:user_id>/favourites/list/`           | GET    | Path params: `user_id`                                           | Get all favourite tracks of a user. Returns full track info including artist and album. Example: `/user/3/favourites/list/`. |
-| `/user/<int:id>/albums/`                         | GET    | Path params: `user_id`                                           | Get all custom albums created by the user. Returns album name, ID, artist, image, and tracks. Example: `/user/3/albums/`.    |
-| `/user/<int:id>/albums/create/`                  | POST   | Path params: `user_id`, form-data: `name`, `artist_id`, `image (file upload)` | Create a new custom album. The album_id is auto-generated. Example: `/user/3/albums/create/`.                                |
-| `/user/albums/<str:album_id>/edit/`              | PATCH    | Path params: `album_id`, form-data: `name`, `image (file upload)`  | Rename a custom album. Example: `/user/albums/album2/rename/`.                                                               |
-| `/user/albums/<str:album_id>/delete/`            | DELETE | Path params: `album_id`                                          | Delete a custom album created by the user. Example: `/user/albums/album2/delete/`.                                           |
-| `/user/{user_id}/albums/{album_id}/add-tracks/`  | POST   | Path params: `user_id`, `album_id`, JSON: `track_ids`            | Add tracks to a custom album. Example: `/user/3/albums/album1/add-tracks/`, `{"track_ids": [1, 2, 3]}`.                      |
-| `/user/token/refresh/`                           | POST   | JSON: `"refresh": "your_refresh_token_here"`                     | Refresh the token for authentication.                                                                                        |
+| `/music/topcharts/`                              | GET    | –                                                                | Lấy danh sách các bài hát nằm trong bảng xếp hạng.                                                             |
+| `/music/tracks/<int:track_id>/play/`             | PATCH  | `track_id` in URL path                                           | Cập nhật số lượng view của một track. Tăng số lượt nghe của bài hát có ID tương ứng. Ví dụ: `/tracks/9/play`.                                    |
+| `/music/genre/`                                  | GET    | –                                                                | Trả về danh sách các thể loại nhạc hiện có.                                                                                     |
+| `/music/tracks/genre/<int:genre_id>/`            | GET    | `genre_id` in URL path                                           | Lấy danh sách bài hát theo thể loại. Ví dụ: `/genre/10/`.                                             |
+| `/music/tracks/search/`                          | GET    | `search_name` in query string                                    | Tìm kiếm bài hát theo tên. Ví dụ: `?search_name=love`.                                                |
+| `/music/artist/details/<int:artist_id>/`         | GET    | `artist_id` in URL path                                          | Trả về chi tiết nghệ sĩ và các bài hát, album nổi bật của họ. Ví dụ: `/artist/1/`.                                                   |
+| `/music/tracks/tracksdetail/<int:track_id>/`     | GET    | `track_id` in URL path                                           | Trả về chi tiết bài hát và các bài hát liên quan (theo thể loại). Ví dụ: `/tracksdetail/8/`.                         |
+| `/music/tracks/albums/`                          | GET    | –                                                                | Lấy danh sách tất cả các album bao gồm thông tin nghệ sĩ, hình ảnh và bài hát.                                                           |
+| `/music/tracks/download/<int:track_id>`          | GET    | `track_id` in URL path                                           | Tải tệp phương tiện (mp4) của bài hát theo ID.                                                                 |
+| `/user/`                                         | GET    | –                                                                | Lấy danh sách người dùng cùng thông tin chi tiết.                                                    |
+| `/user/register/`                                | POST   | JSON: `username`, `email`, `name`, `password`, `password2`       | Đăng ký người dùng mới sau khi xác thực thông tin.                                                               |
+| `/user/login/`                                   | POST   | JSON: `username`, `password`                                     | Đăng nhập và tạo phiên làm việc sau khi xác thực thông tin.                                                        |
+| `/user/logout/`                                  | POST   | –                                                                | Đăng xuất và xóa phiên làm việc hiện tại.                                                                                       |
+| `/user/me/`                                      | GET    | –                                                                | Lấy thông tin cá nhân của người dùng đã đăng nhập.                                              |
+| `/user/update/`                                  | PATCH  | JSON: `name`         |                                           | Cập nhật tên người dùng. |
+| `/user/<int:user_id>/favourites/`                | POST   | Path params: `user_id`, JSON: `track_id`                         | Thêm bài hát vào danh sách yêu thích của người dùng. Ví dụ: `/user/3/favourites/`.                                                   |
+| `/user/<int:user_id>/favourites/<int:track_id>/` | DELETE | Path params: `user_id`, `track_id`                               | Xóa bài hát khỏi danh sách yêu thích. Ví dụ: `/user/3/favourites/1/`.                                            |
+| `/user/<int:user_id>/favourites/list/`           | GET    | Path params: `user_id`                                           | Lấy tất cả bài hát yêu thích của người dùng (bao gồm thông tin artist và album). Ví dụ: `/user/3/favourites/list/`. |
+| `/user/<int:id>/albums/`                         | GET    | Path params: `user_id`                                           |Lấy tất cả album tùy chỉnh mà người dùng đã tạo (album name, ID, artist, image, và tracks). Ví dụ: `/user/3/albums/`.    |
+| `/user/<int:id>/albums/create/`                  | POST   | Path params: `user_id`, form-data: `name`, `artist_id`, `image (file upload)` | Tạo album tùy chỉnh mới. `album_id` sẽ được tạo tự động. Ví dụ: `/user/3/albums/create/`.                                |
+| `/user/albums/<str:album_id>/edit/`              | PATCH    | Path params: `album_id`, form-data: `name`, `image (file upload)`  | Đổi tên album tùy chỉnh. Ví dụ: `/user/albums/album2/rename/`.                                                               |
+| `/user/albums/<str:album_id>/delete/`            | DELETE | Path params: `album_id`                                          | Xóa album tùy chỉnh của người dùng. Ví dụ: `/user/albums/album2/delete/`.                                           |
+| `/user/{user_id}/albums/{album_id}/add-tracks/`  | POST   | Path params: `user_id`, `album_id`, JSON: `track_ids`            | Thêm các bài hát vào album tùy chỉnh. Ví dụ: `/user/3/albums/album1/add-tracks/`, `{"track_ids": [1, 2, 3]}`.                      |
+| `/user/token/refresh/`                           | POST   | JSON: `"refresh": "your_refresh_token_here"`                     | Làm mới token xác thực.                                                                                        |
 
-# Setup and Installation ⚙️
+# Thiết lập và Cài đặt ⚙️
 
-## 1. Create a Virtual Environment
+## 1. Tạo Môi Trường Ảo (Virtual Environment)
 
-- Run the following command:
+- Chạy lệnh sau:
 
 ```bash
   python -m venv myvenv
 ```
 
-- Allow Script Execution in PowerShell (Windows)
+- Cho phép thực thi script trong PowerShell (Windows):
 
 ```bash
     Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
-- Activate the Virtual Environment
+- Kích hoạt môi trường ảo:
 
 ```bash
     myvenv\Scripts\activate
 ```
 
-## 2. Install Required Libraries
+## 2. Cài đặt Thư viện Cần Thiết
 
-- Run:
+- Chạy:
 
 ```bash
   pip install -r requirements.txt
 ```
 
-## 3. Configure the Database
+## 3. Cấu Hình Cơ Sở Dữ Liệu
 
-- Update the database settings in the settings.py file inside the spotify_clone_backend directory
-- The project uses PostgreSQL as the database
+- Cập nhật cấu hình cơ sở dữ liệu trong file settings.py bên trong thư mục spotify_clone_backend.
+- Dự án sử dụng PostgreSQL làm cơ sở dữ liệu:
 
 ```python
 DATABASES = {
@@ -104,53 +104,53 @@ DATABASES = {
 }
 ```
 
-## 4. Run Migrations
+## 4. Thực hiện Migrations
 
-- Generate Migration Files from Models:
+- Tạo file migration từ models::
 
 ```bash
     python manage.py makemigrations
 ```
 
-- Apply Migrations to the Actual Database:
+- Áp dụng migrations vào cơ sở dữ liệu::
 
 ```bash
     python manage.py migrate
 ```
 
-## 5. Create an Admin (Superuser) Account
+## 5. Tạo Tài Khoản Quản Trị (Superuser)
 
-- Run:
+- Chạy:
 
 ```bash
     python manage.py createsuperuser
 ```
 
-## 6. Run Seed Local Data:
+## 6. Tạo Dữ Liệu Mẫu Cục Bộ:
 
-- Run the following script to populate test data:
+- Chạy script sau để tạo dữ liệu thử nghiệm:
 
 ```bash
   py seed_data.py
 ```
 
-## 7. Run the Server:
+## 7. Chạy Server:
 
-- Run:
+- Chạy:
 
 ```bash
     python manage.py runserver
 ```
 
-## Some Useful Django Commands:
+## Một số lệnh Django hữu ích:
 
-- Create a Django Project:
+- Tạo một project Django:
 
 ```bash
 django-admin startproject 'project-name' .
 ```
 
-- Create a Django App:
+- Tạo một app Django:
 
 ```bash
 python manage.py startapp 'app-name'
@@ -158,4 +158,4 @@ python manage.py startapp 'app-name'
 
 # LICENSE 📄
 
-- This project is licensed under the MIT License. See the LICENSE file for details.
+- Dự án này được cấp phép theo giấy phép MIT. Xem file LICENSE để biết chi tiết.
