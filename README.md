@@ -6,9 +6,9 @@ Dự án này cung cấp các API để phát nhạc trực tuyến, bao gồm c
 
 # Mục lục - TOC
 - [Cấu Trúc Dự Án](#cấu-trúc-dự-án)
-- [📌 Các Endpoint API](#api-endpoints-)
-- [⚙️ Thiết lập và Cài đặt](#setup-and-installation-️)
-- [📄 Giấy phép](#license-)
+- [Các Endpoint API](#api-endpoints)
+- [Thiết lập và Cài đặt](#setup-and-installation)
+- [Giấy phép](#license)
 
 ## Tính năng:
 
@@ -89,7 +89,7 @@ spotify_backend/
 └── .gitignore                                                                     # Các file/thư mục không commit vào git
 ```
 
-# Các Endpoint API 📌
+# Các Endpoint API
 
 **Base URL (cục bộ)**: `http://127.0.0.1:8000/api/`
 
@@ -120,7 +120,7 @@ spotify_backend/
 | `/user/{user_id}/albums/{album_id}/add-tracks/`  | POST   | Path params: `user_id`, `album_id`, JSON: `track_ids`            | Thêm các bài hát vào album tùy chỉnh. Ví dụ: `/user/3/albums/album1/add-tracks/`, `{"track_ids": [1, 2, 3]}`.                      |
 | `/user/token/refresh/`                           | POST   | JSON: `"refresh": "your_refresh_token_here"`                     | Làm mới token xác thực.                                                                                        |
 
-# Thiết lập và Cài đặt ⚙️
+# Thiết lập và Cài đặt
 
 ## 1. Tạo Môi Trường Ảo (Virtual Environment)
 
@@ -220,6 +220,6 @@ django-admin startproject 'project-name' .
 python manage.py startapp 'app-name'
 ```
 
-# LICENSE 📄
+# LICENSE
 
 - Dự án này được cấp phép theo giấy phép MIT. Xem file LICENSE để biết chi tiết.
