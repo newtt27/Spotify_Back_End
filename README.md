@@ -28,65 +28,65 @@ Backend tuân theo nguyên tắc RESTful API và được xây dựng dựa trê
 ## Cấu Trúc Dự Án
 ```
 spotify_backend/
-├── spotify_back_end/                # Cấu hình toàn cục của Django project
-│   ├── __init__.py                  # Biến thư mục thành package Python
-│   ├── asgi.py                      # Cấu hình cho ASGI server
-│   ├── settings.py                  # Cấu hình chính (DB, apps, middleware...)
-│   ├── urls.py                      # Định tuyến chính toàn hệ thống
-│   └── wsgi.py                      # Cấu hình cho WSGI server
+├── spotify_back_end/                                                              # Cấu hình toàn cục của Django project
+│   ├── __init__.py                                                                # Biến thư mục thành package Python
+│   ├── asgi.py                                                                    # Cấu hình cho ASGI server
+│   ├── settings.py                                                                # Cấu hình chính (DB, apps, middleware...)
+│   ├── urls.py                                                                    # Định tuyến chính toàn hệ thống
+│   └── wsgi.py                                                                    # Cấu hình cho WSGI server
 │
-├── api/                             # App tổng hợp logic chung hoặc API gateway
+├── api/                                                                           # App tổng hợp logic chung hoặc API gateway
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
-│   ├── models.py                    # Model dùng chung nếu có
+│   ├── models.py                                                                  # Model dùng chung nếu có
 │   ├── tests.py
-│   ├── urls.py                      # Định tuyến cho các API trong app này
-│   ├── views.py                     # Xử lý các request/response API
-│   └── migrations/                  # Theo dõi thay đổi của model
+│   ├── urls.py                                                                    # Định tuyến cho các API trong app này
+│   ├── views.py                                                                   # Xử lý các request/response API
+│   └── migrations/                                                                # Theo dõi thay đổi của model
 │
-├── music/                           # Xử lý dữ liệu âm nhạc
+├── music/                                                                         # Xử lý dữ liệu âm nhạc
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
-│   ├── models.py                    # Model: Artist, Album, Track, Genre,...
+│   ├── models.py                                                                  # Model: Artist, Album, Track, Genre,...
 │   ├── tests.py
-│   ├── urls.py                      # Định tuyến các API âm nhạc
-│   ├── utils.py                     # Hàm tiện ích xử lý dữ liệu nhạc
-│   ├── views.py                     # API trả danh sách bài hát, album, v.v.
+│   ├── urls.py                                                                    # Định tuyến các API âm nhạc
+│   ├── utils.py                                                                   # Hàm tiện ích xử lý dữ liệu nhạc
+│   ├── views.py                                                                   # API trả danh sách bài hát, album, v.v.
 │   ├── migrations/
-│   └── serializers/                 # Chuyển model -> JSON
+│   └── serializers/                                                               # Chuyển model -> JSON
 │       ├── __init__.py
-│       ├── albums_serializers.py    # Serialize cho Album
-│       ├── artist_serializers.py    # Serialize cho Artist
-│       ├── genre_serializers.py     # Serialize cho thể loại nhạc
-│       └── tracks_serializers.py    # Serialize cho bài hát
+│       ├── albums_serializers.py                                                  # Serialize cho Album
+│       ├── artist_serializers.py                                                  # Serialize cho Artist
+│       ├── genre_serializers.py                                                   # Serialize cho thể loại nhạc
+│       └── tracks_serializers.py                                                  # Serialize cho bài hát
 │
-├── user/                            # Quản lý người dùng và tương tác cá nhân
+├── user/                                                                          # Quản lý người dùng và tương tác cá nhân
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
-│   ├── models.py                    # User, FavouriteTrack, CreatedAlbum,...
+│   ├── models.py                                                                  # User, FavouriteTrack, CreatedAlbum,...
 │   ├── tests.py
-│   ├── urls.py                      # API đăng ký, đăng nhập, yêu thích...
+│   ├── urls.py                                                                    # API đăng ký, đăng nhập, yêu thích...
 │   ├── views.py
 │   ├── migrations/
 │   └── serializers/
 │       ├── __init__.py
-│       ├── User_FavouriteTracks.py  # Serialize bài hát yêu thích
-│       ├── User_Register.py         # Xử lý đăng ký người dùng
-│       ├── User_Serializer.py       # Serialize profile người dùng
-│       └── UserCreatedAlbum_Serializer.py  # Serialize album do người dùng tạo
+│       ├── User_FavouriteTracks.py                                                # Serialize bài hát yêu thích
+│       ├── User_Register.py                                                       # Xử lý đăng ký người dùng
+│       ├── User_Serializer.py                                                     # Serialize profile người dùng
+│       └── UserCreatedAlbum_Serializer.py                                         # Serialize album do người dùng tạo
 │
-├── media/                           # Lưu file media được upload
-│   ├── images/                      # Ảnh (album, artist, avatar)
-│   └── videos/                      # Video âm nhạc (nếu có)
+├── media/                                                                         # Lưu file media được upload
+│   ├── images/                                                                    # Ảnh (album, artist, avatar)
+│   └── videos/                                                                    # Video âm nhạc (nếu có)
 │
-├── seed_data.py                     # Script sinh dữ liệu mẫu
-├── manage.py                        # CLI Django: migrate, runserver, etc.
-├── requirements.txt                 # Thư viện cần cài (DRF, Pillow,...)
-├── README.md                        # Ghi chú hướng dẫn dự án
-└── .gitignore                       # Các file/thư mục không commit vào git
+├── seed_data.py                                                                   # Script sinh dữ liệu mẫu
+├── manage.py                                                                      # CLI Django: migrate, runserver, etc.
+├── requirements.txt                                                               # Thư viện cần cài (DRF, Pillow,...)
+├── README.md                                                                      # Ghi chú hướng dẫn dự án
+└── .gitignore                                                                     # Các file/thư mục không commit vào git
 ```
 
 # Các Endpoint API 📌
