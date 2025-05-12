@@ -16,8 +16,6 @@ Dự án này cung cấp các API để phát nhạc trực tuyến, bao gồm c
 - [Giấy phép](#giấy-phép)
 - [Đóng góp](#đóng-góp)
 
----
-
 ## Tính năng:
 
 - ✅ Xác thực và quản lý người dùng bằng JWT
