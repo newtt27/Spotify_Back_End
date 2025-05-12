@@ -39,6 +39,7 @@ Backend tuân theo nguyên tắc RESTful API và được xây dựng dựa trê
 
 ## Kiến trúc hệ thống
 
+```
 Client (React, Mobile, v.v.)
     ↓
 [REST API]
@@ -46,7 +47,7 @@ Client (React, Mobile, v.v.)
 Django + Django REST Framework
     ↓
 PostgreSQL (Lưu trữ bài hát, user, album,...)
-
+```
 
 ## Cấu Trúc Dự Án
 ```
