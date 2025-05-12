@@ -6,9 +6,9 @@ Dự án này cung cấp các API để phát nhạc trực tuyến, bao gồm c
 
 # Mục lục - TOC
 - [Cấu Trúc Dự Án](#cấu-trúc-dự-án)
-- [Các Endpoint API](#api-endpoints-)
-- [Thiết lập và Cài đặt](#setup-and-installation-️)
-- [Giấy phép](#license-)
+- [Các Endpoint API 📌](#api-endpoints-)
+- [Thiết lập và Cài đặt ⚙️](#setup-and-installation-️)
+- [Giấy phép 📄](#license-)
 
 ## Tính năng:
 
